@@ -1,4 +1,5 @@
 import React from "react";
+import {BrowserRouter as Router, Link} from "react-router-dom";
 
 function AppHeader() {
     const date = new Date()
@@ -24,10 +25,21 @@ function AppHeader() {
             <div className="navbar-fixed">
                 <nav>
                     <div className="nav-wrapper">
-                        <a href="#" className="center brand-logo" >E-Salon</a>
-                        <ul id="nav-mobile" className="left hide-on-med-and-down">
-                            <li><a href="facebook.com"><i className="material-icons">account_circle</i></a></li>
-                            <li><a href="instagram.com"><i className="material-icons">shopping_cart</i></a></li>
+                        {/*<a href="#" className="left brand-logo" >E-Salon</a>*/}
+                        <div className="brand-logo" ><Link to="home">E-Salon</Link> </div>
+                        <ul id="nav-mobile">
+                            {
+                                localStorage.getItem("loggedIn")?
+                                <li className="left"><h6>Good {timeOfDay} {localStorage.getItem("loggedIn")}</h6></li>
+                                :
+                                null
+                            }
+                            <li className="right "><a href="facebook.com"><i className="material-icons">account_circle</i></a></li>
+                            <li className="right "><a href="instagram.com"><i className="material-icons">shopping_cart</i></a></li>
+                            <li className="right "><Link to="/"><i className="material-icons">vpn_key</i></Link></li>
+
+                            {/*<Link to={"about"}>ABOUT</Link>*/}
+
                         </ul>
                     </div>
                 </nav>

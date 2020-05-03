@@ -1,7 +1,10 @@
 spring:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/salon?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/salon?serverTimezone=UTC
+
+#    useSSL: false
+#    allowPublicKeyRetrieval: true
     username: root
     password: Mint@0031
   jpa:

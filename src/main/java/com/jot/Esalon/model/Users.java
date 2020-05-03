@@ -11,10 +11,22 @@ public class Users {
     @GeneratedValue
     @Column(name = "uid")
     private Integer uid;
-    @Column(name = "uname")
-    private String uname;
+    @Column(name = "username")
+    private String username;
     @Column(name = "password")
     private String password;
+    @Column(name = "name")
+    private String  name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
 
     public Users() {
     }
@@ -27,12 +39,12 @@ public class Users {
         this.uid = uid;
     }
 
-    public String getUname() {
-        return uname;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUname(String uname) {
-        this.uname = uname;
+    public void setUsername(String uname) {
+        this.username = uname;
     }
 
     public String getPassword() {

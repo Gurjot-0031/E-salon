@@ -1,13 +1,33 @@
 package com.jot.Esalon.model;
 
 public class AuthenticationResponse {
-    private final String jwt;
+//    private final String jwt;
+//
+//    public AuthenticationResponse(String jwt) {
+//        this.jwt = jwt;
+//    }
+//
+//    public String getJwt() {
+//        return jwt;
+//    }
 
-    public AuthenticationResponse(String jwt) {
-        this.jwt = jwt;
+    private String username;
+    //private String role;
+    private boolean isSuccess;
+
+    public String getUsername() {
+        return username;
     }
 
-    public String getJwt() {
-        return jwt;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public boolean isSuccess() {
+        return isSuccess;
+    }
+
+    public void setSuccess(boolean success) {
+        isSuccess = success;
     }
 }
