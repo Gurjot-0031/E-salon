@@ -1,10 +1,5 @@
 import React,{Component} from "react";
-import {Redirect, Route} from 'react-router-dom';
 import AppHeader from "./AppHeader";
-import Protected from "./Protected";
-import Products from "./Products";
-import AppFooter from "./AppFooter";
-//import SignUp from "./SignUp";
 
 function validatePWD() {
     var pwdElement = document.getElementById("passwordBox2");
@@ -23,24 +18,37 @@ export default class LoginAndSignUp extends Component{
         this.state={
             isRegistering: false
         }
+        this.login = this.login.bind(this);
     }
 
+
     login() {
-        fetch('http://localhost:8080/rest/users/authenticate',
-            {
-                method: "POST",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(this.state)
-            }).then(result=>{
+        const myInit = {
+            method: "POST",
+            headers: {
+                //"Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            mode: "cors",
+            cache: "default",
+            body: JSON.stringify(this.state)
+        };
+        let myRequest = new Request("http://localhost:8080/rest/users/authenticate",myInit);
+        let checkFetch = function(response){
+            if(!response.ok){
+                throw Error(response.statusText+"  "+response.url);
+            }
+            return response;
+        };
+        fetch(myRequest)
+            .then(checkFetch)
+            .then(result=>{
                 result.json().then(resp=>{
                     // if(resp.username)
                     console.log(resp);
-                        localStorage.setItem("loggedIn",resp);
+                    localStorage.setItem("loggedIn",resp);
                 })
-        });
+        }).catch(error=>console.warn("error "+error));
         //alert("Stringified Resp"+localStorage.getItem("auth"));
     }
     register() {
@@ -82,10 +90,10 @@ export default class LoginAndSignUp extends Component{
                 <div className="table-of-contents " >
                     <div className="row">
                         <div className="col s4 offset-s4">
-                            <h4>E-Salon</h4>
+                            {/*<h4>E-Salon</h4>*/}
                             {
                                 !this.state.isRegistering ?
-                                    <form onSubmit={()=>this.login()}>
+                                    <form onSubmit={()=>this.login}>
                                         <input type={"text"} id={"unameBox"}
                                                onChange={(e)=>
                                                {this.setState({username:e.target.value})}} required>
@@ -97,7 +105,7 @@ export default class LoginAndSignUp extends Component{
                                         </input>
                                         <label htmlFor={"passwordBox"}>Password:</label>
                                         <center>
-                                            <button type={"submit"}>LOGIN</button>
+                                            <button type={"submit"} >LOGIN</button>
                                             {/*<p> New User?  <BrowserRouter><Link compo>Sign Up</Link></BrowserRouter> </p>*/}
                                         </center>
                                         <center>
@@ -106,13 +114,7 @@ export default class LoginAndSignUp extends Component{
                                         </center>
                                     </form>
                                     :
-                                    <form onSubmit={()=>{
-                                        if(this.state.cnfpassword===this.state.password)
-                                            this.register();
-                                        else {
-                                            alert("Passwords do not match");
-                                        }
-                                    }}>
+                                    <form onSubmit={()=>{this.register()}}>
                                         <input type={"text"} id={"nameBox"}
                                                onChange={(e)=>
                                                {this.setState({name:e.target.value})}} required>
