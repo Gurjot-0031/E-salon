@@ -11,23 +11,8 @@ public class AuthenticationResponse {
 //        return jwt;
 //    }
 
-    private String username;
+    public String username;
     //private String role;
-    private boolean isSuccess;
+    public boolean isSuccess;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public boolean isSuccess() {
-        return isSuccess;
-    }
-
-    public void setSuccess(boolean success) {
-        isSuccess = success;
-    }
 }

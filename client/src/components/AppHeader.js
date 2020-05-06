@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter as Router, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 function AppHeader() {
     const date = new Date()
@@ -22,7 +22,7 @@ function AppHeader() {
     return(
         <div>
             {/*<header style={styles}> Good {timeOfDay}</header>*/}
-            <div className="navbar-fixed">
+            <div className="navbar-fixed" style={styles}>
                 <nav>
                     <div className="nav-wrapper">
                         {/*<a href="#" className="left brand-logo" >E-Salon</a>*/}

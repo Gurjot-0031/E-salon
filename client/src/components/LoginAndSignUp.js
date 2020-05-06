@@ -1,5 +1,6 @@
 import React,{Component} from "react";
 import AppHeader from "./AppHeader";
+import Axios from "axios";
 
 function validatePWD() {
     var pwdElement = document.getElementById("passwordBox2");
@@ -16,40 +17,63 @@ export default class LoginAndSignUp extends Component{
     constructor(props) {
         super(props);
         this.state={
-            isRegistering: false
+            isRegistering: false,
         }
         this.login = this.login.bind(this);
+        this.register = this.register.bind(this);
     }
 
 
     login() {
-        const myInit = {
-            method: "POST",
-            headers: {
-                //"Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            mode: "cors",
-            cache: "default",
-            body: JSON.stringify(this.state)
-        };
-        let myRequest = new Request("http://localhost:8080/rest/users/authenticate",myInit);
-        let checkFetch = function(response){
-            if(!response.ok){
-                throw Error(response.statusText+"  "+response.url);
-            }
-            return response;
-        };
-        fetch(myRequest)
-            .then(checkFetch)
-            .then(result=>{
-                result.json().then(resp=>{
-                    // if(resp.username)
-                    console.log(resp);
-                    localStorage.setItem("loggedIn",resp);
-                })
-        }).catch(error=>console.warn("error "+error));
+        console.log("Testing.......");
+
+        // let checkFetch = function(response){
+        //     if(!response.ok){
+        //         throw Error(response.statusText+" henlo  "+response.url);
+        //     }
+        //     return response;
+        // };
+        // fetch("http://localhost:8080/rest/users/authenticate",
+        //     {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         //"Accept": "application/json",
+        //         //"Access-Control-Allow-Origin": "*"
+        //     },
+        //     body: JSON.stringify(this.state)
+        // })
+        //     //.then(checkFetch)
+        //     .then(response => response.json())
+        //     .then(parsedJson => localStorage.setItem("data",parsedJson))
+        //     .catch(error=>localStorage.setItem("error",error));
         //alert("Stringified Resp"+localStorage.getItem("auth"));
+
+        // Example POST method implementation:
+        async function postData(url = '', data = {}) {
+            // Default options are marked with *
+            const response = await fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                //mode: 'cors', // no-cors, *cors, same-origin
+                //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                //credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                //redirect: 'follow', // manual, *follow, error
+                //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify(data) // body data type must match "Content-Type" header
+            })
+                .catch(error=>{localStorage.setItem("error2",error)});
+            return response.json(); // parses JSON response into native JavaScript objects
+        }
+
+        postData("http://localhost:8080/rest/users/authenticate", this.state)
+            .then(data => {
+                console.log(data); // JSON data parsed by `response.json()` call
+            });
     }
     register() {
         fetch('http://localhost:8080/rest/users/addUser',
@@ -93,21 +117,24 @@ export default class LoginAndSignUp extends Component{
                             {/*<h4>E-Salon</h4>*/}
                             {
                                 !this.state.isRegistering ?
-                                    <form onSubmit={()=>this.login}>
-                                        <input type={"text"} id={"unameBox"}
-                                               onChange={(e)=>
-                                               {this.setState({username:e.target.value})}} required>
-                                        </input>
-                                        <label htmlFor={"unameBox"}>Username:</label>
-                                        <input type={"text"} id={"passwordBox"}
-                                               onChange={(e)=>
-                                               {this.setState({password:e.target.value})}} required>
-                                        </input>
-                                        <label htmlFor={"passwordBox"}>Password:</label>
-                                        <center>
-                                            <button type={"submit"} >LOGIN</button>
-                                            {/*<p> New User?  <BrowserRouter><Link compo>Sign Up</Link></BrowserRouter> </p>*/}
-                                        </center>
+                                    <form onSubmit={this.login} >
+                                        <label>
+                                            <input type={"text"} name={"username"}
+                                                   onChange={(e)=>
+                                                   {this.setState({username:e.target.value})}} required>
+                                            </input>
+                                        </label>
+                                        <label>
+                                            <input type={"text"} name={"password"}
+                                                   onChange={(e)=>
+                                                   {this.setState({password:e.target.value})}} required>
+                                            </input>
+                                        </label>
+                                        <input type={"submit"} value={"LOGIN"}/>
+                                        {/*<center>*/}
+                                        {/*    <button type={"submit"} >LOGIN</button>*/}
+                                        {/*    /!*<p> New User?  <BrowserRouter><Link compo>Sign Up</Link></BrowserRouter> </p>*!/*/}
+                                        {/*</center>*/}
                                         <center>
                                             <button onClick={()=>this.setState({isRegistering:true})}>Go to REGISTER</button>
                                             {/*<p> New User?  <BrowserRouter><Link compo>Sign Up</Link></BrowserRouter> </p>*/}
@@ -115,40 +142,41 @@ export default class LoginAndSignUp extends Component{
                                     </form>
                                     :
                                     <form onSubmit={()=>{this.register()}}>
-                                        <input type={"text"} id={"nameBox"}
-                                               onChange={(e)=>
-                                               {this.setState({name:e.target.value})}} required>
-                                        </input>
-                                        <label htmlFor={"nameBox"}>Name:</label>
-                                        <input type={"text"} id={"unameBox2"}
-                                               onChange={(e)=>
-                                               {this.setState({username:e.target.value})}} required>
-                                        </input>
-                                        <label htmlFor={"unameBox2"}>Username:</label>
-                                        <input type={"text"} id={"passwordBox2"}
-                                               onChange={(e)=>
-                                               {
-                                                   validatePWD();
-                                                   this.setState({password:e.target.value});
-                                               }} required>
-                                        </input>
-                                        <label htmlFor={"passwordBox2"}>Password:</label>
-                                        <input type={"text"} id="cnfpwdBox"
-                                               onChange={(e)=>
-                                               {
-                                                   validatePWD();
-                                                   this.setState({cnfpassword:e.target.value});
-                                               }} required>
-                                        </input>
-                                        <label htmlFor={"cnfpwdBox"}>Confirm Password:</label>
-
+                                        <label>
+                                            <input type={"text"} name={"name"}
+                                                   onChange={(e)=>
+                                                   {this.setState({name:e.target.value})}} required>
+                                            </input>
+                                        </label>
+                                        <label>
+                                            <input type={"text"} name={"username"}
+                                                   onChange={(e)=>
+                                                   {this.setState({username:e.target.value})}} required>
+                                            </input>
+                                        </label>
+                                        <label>
+                                            <input type={"text"} name={"password"}
+                                                   onChange={(e)=>
+                                                   {
+                                                       validatePWD();
+                                                       this.setState({password:e.target.value});
+                                                   }} required>
+                                            </input>
+                                        </label>
+                                        <label>
+                                            <input type={"text"} name={"cnfpassword"}
+                                                   onChange={(e)=>
+                                                   {
+                                                       validatePWD();
+                                                       this.setState({cnfpassword:e.target.value});
+                                                   }} required>
+                                            </input>
+                                        </label>
                                         <center>
                                             <button type={"submit"}>REGISTER</button>
-                                            {/*<p> New User?  <BrowserRouter><Link compo>Sign Up</Link></BrowserRouter> </p>*/}
                                         </center>
                                         <center>
                                             <button onClick={()=>this.setState({isRegistering:false})}>Go to Login</button>
-                                            {/*<p> New User?  <BrowserRouter><Link compo>Sign Up</Link></BrowserRouter> </p>*/}
                                         </center>
                                     </form>
                             }

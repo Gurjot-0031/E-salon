@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import SingleProduct from "./SingleProduct";
-import axios from "axios";
 
 export default class Products extends Component{
     constructor(props) {

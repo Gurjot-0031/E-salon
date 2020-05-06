@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Products from "./components/Products";
-//import Login from "./components/Login";
+import Login from "./components/Login";
 import AppHeader from "./components/AppHeader";
 import AppFooter from "./components/AppFooter";
 import Protected from "./components/Protected";
@@ -33,7 +33,8 @@ function App() {
                     {/*<Protected cmp={AppFooter}/>*/}
                 </Route>
                 <Route path="/">
-                    <LoginAndSignUp />
+                    <Login/>
+                    {/*<LoginAndSignUp />*/}
                 </Route>
             </Switch>
         </Router>
