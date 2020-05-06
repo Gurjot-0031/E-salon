@@ -15,4 +15,12 @@ public class AuthenticationResponse {
     //private String role;
     public boolean isSuccess;
 
+
+    @Override
+    public String toString() {
+        return "AuthenticationResponse{" +
+                "username='" + username + '\'' +
+                ", isSuccess=" + isSuccess +
+                '}';
+    }
 }

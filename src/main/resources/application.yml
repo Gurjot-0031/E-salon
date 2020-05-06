@@ -6,7 +6,7 @@ spring:
 #    useSSL: false
 #    allowPublicKeyRetrieval: true
     username: root
-    password: Mint@0031
+    password: root
   jpa:
     hibernate.ddl-auto: update
     generate-ddl: true

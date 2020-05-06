@@ -49,6 +49,7 @@ public class UsersAPI {
                     response.username = users.getUsername();
                     response.isSuccess = true;
                     httpResponse.setStatus(200);
+                    System.out.println("REsponse =>"+ response);
                     return response;
                 }
             }
