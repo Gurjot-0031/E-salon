@@ -1,20 +1,17 @@
 import React,{Component} from "react";
 import AppHeader from "./AppHeader";
-import Login from "./Login";
-
-
 
 export default class SignUp extends Component{
     constructor(props) {
         super(props);
         this.state={
-
+            signUpErrors:[]
         }
         this.register = this.register.bind(this);
     }
 
     register() {
-        if(this.state.password === this.state.cnfpassword)
+        if(this.state.password === this.state.cnfpassword) {
             fetch('http://localhost:8080/rest/users/addUser',
                 {
                     method: "POST",
@@ -23,19 +20,16 @@ export default class SignUp extends Component{
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(this.state)
-                }).then(result=> result.json())
-                .then(parsedResp=>{
-                    this.props.loggedUsername = parsedResp.username;
-                    this.props.isLoggedIn = parsedResp.isSuccess;
-                    for (let p of this.props) {
-                        console.log(p);
-                    }
+                }).then(result => result.json())
+                .then(parsedResp => {
+                    localStorage.setItem("isLoggedIn",parsedResp.isSuccess);
+                    localStorage.setItem("loggedUsername",parsedResp.username);
                 })
-
-
-            this.props.isRegisteringToggle(false);
-
-
+                this.props.isRegisteringToggle(false);
+        }
+        else{
+            this.state.signUpErrors.push("Passwords do not match");
+        }
     }
 
     handleChange(event) {
@@ -96,6 +90,9 @@ export default class SignUp extends Component{
                                            this.handleChange.bind(this);
                                        }} required>
                                 </input>
+                            </label>
+                            <label>
+                                {this.state.signUpErrors.forEach(error=>error)}
                             </label>
                             <input type={"button"} className={"input-field col s12 btn"}
                                 onClick={this.register.bind(this)}

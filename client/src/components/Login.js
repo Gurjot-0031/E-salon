@@ -1,6 +1,7 @@
 import React,{Component} from "react";
 import AppHeader from "./AppHeader";
 import SignUp from "./SignUp";
+import {Redirect} from 'react-router-dom';
 
 export default class Login extends Component{
     constructor(props) {
@@ -36,13 +37,15 @@ export default class Login extends Component{
              .then(data=>{
                  this.setState({isLoggedIn:data.isSuccess});
                  this.setState({loggedUsername:data.username});
+                 localStorage.setItem("isLoggedIn",data.isSuccess);
+                 localStorage.setItem("loggedUsername",data.username);
                  console.log(this.state)
              })
             .catch(error=>console.log("ERROR WHILE LOGGING IN "+error));
 
-
-
     }
+
+
     render() {
         let st = {
             //backgroundImage: url("/pics/loginBack.jpg"),
@@ -83,21 +86,15 @@ export default class Login extends Component{
                                            value={"Go to REGISTER"}
                                     />
                                 </label>
-                                {/*<center>*/}
-                                {/*    <button type={"submit"} >LOGIN</button>*/}
-                                {/*    /!*<p> New User?  <BrowserRouter><Link compo>Sign Up</Link></BrowserRouter> </p>*!/*/}
-                                {/*</center>*/}
-                                {/*<center>*/}
-                                {/*    <button onClick={()=>this.setState({isRegistering:true})}>Go to REGISTER</button>*/}
-                                {/*    /!*<p> New User?  <BrowserRouter><Link compo>Sign Up</Link></BrowserRouter> </p>*!/*/}
-                                {/*</center>*/}
                             </div>
                         </div>
                     </div>
                 </div>
             );
         else
-            return <SignUp isRegisteringToggle={this.dataComingFromSignUp.bind(this)}/>;
+            return <SignUp
+                isRegisteringToggle={this.isRegisteringDataComingFromSignUp.bind(this)}
+            />;
     }
 
     handleUsernameChange(event) {
@@ -111,7 +108,8 @@ export default class Login extends Component{
         this.setState({isRegistering:true});
     }
 
-    dataComingFromSignUp(param) {
+    isRegisteringDataComingFromSignUp(param) {
         this.setState({isRegistering:param})
     }
+
 }

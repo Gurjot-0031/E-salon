@@ -45,9 +45,6 @@ function AppHeader() {
                 </nav>
             </div>
         </div>
-
-
-
     )
 
 }
