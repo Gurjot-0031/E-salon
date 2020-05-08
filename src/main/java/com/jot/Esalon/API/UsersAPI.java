@@ -30,9 +30,25 @@ public class UsersAPI {
 
     //@CrossOrigin(origins = "*")
     @PostMapping(value = "/addUser")
-    public List<Users> addUserToDB(@RequestBody final Users users){
-        repository.save(users);
-        return repository.findAll();
+    public AuthenticationResponse addUserToDB(@RequestBody final Users users){
+        AuthenticationResponse response = new AuthenticationResponse();
+        try{
+            repository.save(users);
+        }
+        catch (Exception e){
+            System.out.println(e);
+            response.username=null;
+            response.isSuccess=false;
+            return response;
+        }
+        //If user is added to the DB without any exception,
+        //aotomatically login that user and return default loggedin response
+        //Else, (see the catch part)
+        response.isSuccess=true;
+        response.username=users.getUsername();
+        return response;
+        //return repository.findAll();
+
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)

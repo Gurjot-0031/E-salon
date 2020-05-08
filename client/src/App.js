@@ -5,7 +5,7 @@ import Login from "./components/Login";
 import AppHeader from "./components/AppHeader";
 import AppFooter from "./components/AppFooter";
 import Protected from "./components/Protected";
-import LoginAndSignUp from "./components/LoginAndSignUp"
+import SignUp from "./components/SignUp"
 import {BrowserRouter as Router, Switch, Link, Route} from 'react-router-dom';
 
 function App() {

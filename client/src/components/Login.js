@@ -1,5 +1,6 @@
 import React,{Component} from "react";
 import AppHeader from "./AppHeader";
+import SignUp from "./SignUp";
 
 export default class Login extends Component{
     constructor(props) {
@@ -8,7 +9,8 @@ export default class Login extends Component{
             isLoggedIn: false,
             loggedUsername: "",
             username:"",
-            password:""
+            password:"",
+            isRegistering:false
         };
         this.login = this.login.bind(this);
         //this.render = this.render.bind(this);
@@ -17,80 +19,85 @@ export default class Login extends Component{
 
      login() {
         console.log("Testing.......");
-
-
          fetch("http://localhost:8080/rest/users/authenticate",{
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            //mode: 'no-cors', // no-cors, *cors, same-origin
-            //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            //credentials: 'include', // include, *same-origin, omit
             headers: {
                 'Content-Type': 'application/json',
                 'Accept':  '*/*',
-                //'Cache-Control': 'no-cache'
-                //"Vary":"Access-Control-Request-Headers"
-                //'Origin':'*'
-                //'Content-Type': 'application/x-www-form-urlencoded',
             },
-            //redirect: 'follow', // manual, *follow, error
-            //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             body: JSON.stringify(this.state) // body data type must match "Content-Type" header
         })
             .then(response=> response.json())
             .then(parsedData => {
-                console.log('parsed data ' +parsedData.username+" "+parsedData.isSuccess); // JSON data parsed by `response.json()` call
+                console.log('parsed data==> ' +parsedData.username+" "+parsedData.isSuccess); // JSON data parsed by `response.json()` call
                 return parsedData;
             })
              //.then(data=>this.setState({loggedUsername:data.username,isLoggedIn:true}))
-             .then(data=>localStorage.setItem("data",data))
-            .catch(error=>console.log("CAUGHT ERROR "+error));
+             .then(data=>{
+                 this.setState({isLoggedIn:data.isSuccess});
+                 this.setState({loggedUsername:data.username});
+                 console.log(this.state)
+             })
+            .catch(error=>console.log("ERROR WHILE LOGGING IN "+error));
+
+
+
     }
     render() {
-
         let st = {
             //backgroundImage: url("/pics/loginBack.jpg"),
             backgroundColor: "#b2c4bd"
         }
         //var auth=JSON.parse(localStorage.getItem("auth"));
-        return (
-            <div>
-            <AppHeader/>
-            {/*<AppFooter/>*/}
-            <div style={st}>
-                {/*{*/}
-                {/*    auth ? <Redirect to="home"></Redirect>:null*/}
-                {/*}*/}
+        if(!this.state.isRegistering)
+            return (
                 <div>
-                    <div className="materialboxed">
-                        <label>
-                            <input type={"text"} name={"username"}
-                                   value={this.state.username}
-                                   onChange={this.handleUsernameChange.bind(this)} required>
-                            </input>
-                        </label>
-                        <label>
-                            <input type={"text"} name={"password"}
-                                   value={this.state.password}
-                                   onChange={this.handlePasswordChange.bind(this)} required>
-                            </input>
-                        </label>
-                        <input type="button"
-                               onClick={this.login.bind(this)}
-                               className="fixed-action-btn" value={"LOGIN"}
-                        />
-                        {/*<center>*/}
-                        {/*    <button type={"submit"} >LOGIN</button>*/}
-                        {/*    /!*<p> New User?  <BrowserRouter><Link compo>Sign Up</Link></BrowserRouter> </p>*!/*/}
-                        {/*</center>*/}
-                        {/*<center>*/}
-                        {/*    <button onClick={()=>this.setState({isRegistering:true})}>Go to REGISTER</button>*/}
-                        {/*    /!*<p> New User?  <BrowserRouter><Link compo>Sign Up</Link></BrowserRouter> </p>*!/*/}
-                        {/*</center>*/}
+                    <AppHeader/>
+                    {/*<AppFooter/>*/}
+                    <div style={st} className={"container"}>
+                        {/*{*/}
+                        {/*    auth ? <Redirect to="home"></Redirect>:null*/}
+                        {/*}*/}
+                        <div className="row">
+                            <div className="col s6 offset-s3">
+                                <label className="input-field col s12">Enter username
+                                    <input type={"text"} name={"username"}
+                                           value={this.state.username}
+                                           onChange={this.handleUsernameChange.bind(this)} required>
+                                    </input>
+                                </label>
+                                <label className="input-field col s12">Enter password
+                                    <input type={"text"} name={"password"}
+                                           value={this.state.password}
+                                           onChange={this.handlePasswordChange.bind(this)} required>
+                                    </input>
+                                </label>
+                                <input type="button" className="input-field col s12 btn"
+                                       onClick={this.login.bind(this)}
+                                       value={"LOGIN"}
+                                />
+                                <label>
+                                    New User?
+                                    <input type="button" className="input-field col s12 btn"
+                                           onClick={this.registerClicked.bind(this)}
+                                           value={"Go to REGISTER"}
+                                    />
+                                </label>
+                                {/*<center>*/}
+                                {/*    <button type={"submit"} >LOGIN</button>*/}
+                                {/*    /!*<p> New User?  <BrowserRouter><Link compo>Sign Up</Link></BrowserRouter> </p>*!/*/}
+                                {/*</center>*/}
+                                {/*<center>*/}
+                                {/*    <button onClick={()=>this.setState({isRegistering:true})}>Go to REGISTER</button>*/}
+                                {/*    /!*<p> New User?  <BrowserRouter><Link compo>Sign Up</Link></BrowserRouter> </p>*!/*/}
+                                {/*</center>*/}
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            </div>
-        );
+            );
+        else
+            return <SignUp isRegisteringToggle={this.dataComingFromSignUp.bind(this)}/>;
     }
 
     handleUsernameChange(event) {
@@ -98,5 +105,13 @@ export default class Login extends Component{
     }
     handlePasswordChange(event) {
         this.setState({password:event.target.value});
+    }
+
+    registerClicked() {
+        this.setState({isRegistering:true});
+    }
+
+    dataComingFromSignUp(param) {
+        this.setState({isRegistering:param})
     }
 }
