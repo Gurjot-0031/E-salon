@@ -92,9 +92,7 @@ export default class Login extends Component{
                 </div>
             );
         else
-            return <SignUp
-                isRegisteringToggle={this.isRegisteringDataComingFromSignUp.bind(this)}
-            />;
+            return <SignUp/>;
     }
 
     handleUsernameChange(event) {
@@ -107,9 +105,4 @@ export default class Login extends Component{
     registerClicked() {
         this.setState({isRegistering:true});
     }
-
-    isRegisteringDataComingFromSignUp(param) {
-        this.setState({isRegistering:param})
-    }
-
 }

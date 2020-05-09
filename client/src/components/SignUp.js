@@ -8,6 +8,7 @@ export default class SignUp extends Component{
             signUpErrors:[]
         }
         this.register = this.register.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     register() {
@@ -25,7 +26,6 @@ export default class SignUp extends Component{
                     localStorage.setItem("isLoggedIn",parsedResp.isSuccess);
                     localStorage.setItem("loggedUsername",parsedResp.username);
                 })
-                this.props.isRegisteringToggle(false);
         }
         else{
             this.state.signUpErrors.push("Passwords do not match");
@@ -33,7 +33,12 @@ export default class SignUp extends Component{
     }
 
     handleChange(event) {
-        this.setState({[event.target.name]:event.target.value})
+        console.log(event.target.name);
+        this.setState({[event.target.name]: event.target.value})
+        console.log(this.state.name);
+        console.log(this.state.username);
+        console.log(this.state.password);
+        console.log(this.state.cnfpassword);
     }
 
     render() {
@@ -59,25 +64,25 @@ export default class SignUp extends Component{
                                 <input type={"text"}
                                        name={"name"}
                                        value={this.state.name}
-                                       onChange={(e)=>
-                                       {this.handleChange.bind(this)}} required>
+                                       onChange={(event)=>
+                                       {this.handleChange(event)}} required>
                                 </input>
                             </label>
                             <label>Username
                                 <input type={"text"}
                                        name={"username"}
                                        value={this.state.username}
-                                       onChange={(e)=>
-                                       {this.handleChange.bind(this)}} required>
+                                       onChange={(event)=>
+                                       {this.handleChange(event)}} required>
                                 </input>
                             </label>
                             <label>Set a password
                                 <input type={"text"}
                                        name={"password"}
                                        value={this.state.password}
-                                       onChange={(e)=>
+                                       onChange={(event)=>
                                        {
-                                           {this.handleChange.bind(this)}
+                                           {this.handleChange(event)}
                                        }} required>
                                 </input>
                             </label>
@@ -85,9 +90,9 @@ export default class SignUp extends Component{
                                 <input type={"text"}
                                        name={"cnfpassword"}
                                        value={this.state.cnfpassword}
-                                       onChange={(e)=>
+                                       onChange={(event)=>
                                        {
-                                           this.handleChange.bind(this);
+                                           this.handleChange(event);
                                        }} required>
                                 </input>
                             </label>
