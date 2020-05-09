@@ -42,7 +42,7 @@ public class UsersAPI {
             return response;
         }
         //If user is added to the DB without any exception,
-        //aotomatically login that user and return default loggedin response
+        //automatically login that user and return default loggedin response
         //Else, (see the catch part)
         response.isSuccess=true;
         response.username=users.getUsername();
