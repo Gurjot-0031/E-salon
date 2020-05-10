@@ -4,13 +4,14 @@ import SignUp from "./SignUp";
 import {Redirect} from 'react-router-dom';
 
 export default class Login extends Component{
+    _isMounted = false;
     constructor(props) {
         super(props);
         this.state={
             isLoggedIn: false,
             loggedUsername: "",
-            username:"",
-            password:"",
+            username:undefined,
+            password:undefined,
             isRegistering:false
         };
         this.login = this.login.bind(this);
@@ -18,9 +19,10 @@ export default class Login extends Component{
     }
 
 
-     login() {
-        console.log("Testing.......");
-         fetch("http://localhost:8080/rest/users/authenticate",{
+     async login() {
+        console.log("Logging in");
+        if(this.state.username !== undefined && this.state.password !== undefined)
+        await fetch("http://localhost:8080/rest/users/authenticate",{
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: {
                 'Content-Type': 'application/json',
@@ -35,19 +37,24 @@ export default class Login extends Component{
             })
              //.then(data=>this.setState({loggedUsername:data.username,isLoggedIn:true}))
              .then(data=>{
-                 this.setState({isLoggedIn:data.isSuccess});
-                 this.setState({loggedUsername:data.username});
                  localStorage.setItem("isLoggedIn",data.isSuccess);
                  localStorage.setItem("loggedUsername",data.username);
-                 console.log(this.state)
+                 //console.log(this.state)
+                 this.setState({loggedUsername:data.username});
+                 this.setState({isLoggedIn:data.isSuccess});
+
+
              })
             .catch(error=>console.log("ERROR WHILE LOGGING IN "+error));
     }
     componentDidMount() {
+        this._isMounted = true;
         this.login();
     }
 
     componentWillUnmount() {
+        this._isMounted = false;
+        this.state=null;
     }
 
 
@@ -99,7 +106,7 @@ export default class Login extends Component{
                 </div>
             );
         else
-            return <SignUp/>;
+            return <SignUp isRegisteringToggle={this.loginClicked.bind(this)}/>;
     }
 
     handleUsernameChange(event) {
@@ -111,5 +118,9 @@ export default class Login extends Component{
 
     registerClicked() {
         this.setState({isRegistering:true});
+    }
+
+    loginClicked() {
+        this.setState({isRegistering:false})
     }
 }

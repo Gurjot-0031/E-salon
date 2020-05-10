@@ -1,5 +1,6 @@
 import React,{Component} from "react";
 import AppHeader from "./AppHeader";
+import {Redirect} from 'react-router-dom';
 
 export default class SignUp extends Component{
     constructor(props) {
@@ -25,6 +26,8 @@ export default class SignUp extends Component{
                 .then(parsedResp => {
                     localStorage.setItem("isLoggedIn",parsedResp.isSuccess);
                     localStorage.setItem("loggedUsername",parsedResp.username);
+                    this.setState({username:parsedResp.username})
+                    this.setState({isLoggedIn:parsedResp.isSuccess})
                 })
         }
         else{
@@ -43,6 +46,8 @@ export default class SignUp extends Component{
 
     render() {
 
+        if(this.state.isLoggedIn)
+            return <Redirect to = "/home" />
         let st = {
             //backgroundImage: url("/pics/loginBack.jpg"),
             backgroundColor: "#b2c4bd"

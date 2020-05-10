@@ -11,19 +11,20 @@ class AppHeader extends Component{
 
     doLogout() {
         localStorage.clear()
-        this.setState({isLoggedIn:false});
+        this.setState({
+            isLoggedIn : false
+        });
         //alert("You have been successfully logged out");
     }
 
     componentDidMount() {
-        if(!this.state.isLoggedIn)
-            return <Redirect to="/" />
-        else
-            return <Redirect to="/home" />
+
     }
 
 
     render(){
+
+
         const date = new Date()
         const hours = date.getHours()
         let timeOfDay
@@ -63,7 +64,10 @@ class AppHeader extends Component{
                                     // ? <li className="right "><Link to="/logout"><i className="material-icons">power_settings_new</i></Link></li>
                                     // : <li className="right "><Link to="/"><i className="material-icons">power_settings_new</i></Link></li>
                                     ? <li className="right "><Link to="/login"><i className="material-icons">LOGIN</i></Link></li>
-                                    : <li className="right "><i className="material-icons" onClick={this.doLogout.bind(this)}>LOGOUT</i></li>
+                                    : <li className="right "><Link><i className="material-icons" onClick={this.doLogout.bind(this)}>LOGOUT</i></Link></li>
+                            }
+                            {
+                                (!this.state.isLoggedIn) ? <Redirect to="/login" /> :  <Redirect to="/home" />
                             }
 
 

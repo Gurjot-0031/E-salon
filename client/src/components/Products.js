@@ -20,8 +20,10 @@ export default class Products extends Component{
         }
         else if(document.getElementById("toggle"+id).innerHTML==="REMOVE"){
             //Removing the element
-            this.state.selectedProducts=
-            this.state.selectedProducts.filter(item=>item.id!==id)
+            this.setState(
+                {selectedProducts:this.state.selectedProducts.filter(item=>item.id!==id)
+                })
+
 
             buttonElement.innerHTML="ADD";
             buttonElement.style.backgroundColor="green"
