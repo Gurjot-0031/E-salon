@@ -1,24 +1,46 @@
-import React from "react";
-import {Link} from "react-router-dom";
+import React,{Component} from "react";
+import {Link, Redirect} from "react-router-dom";
 
-function AppHeader() {
-    const date = new Date()
-    const hours = date.getHours()
-    let timeOfDay
-
-    if (hours < 12) {
-        timeOfDay = "Morning"
-    } else if (hours >= 12 && hours < 17) {
-        timeOfDay = "Afternoon"
-    } else {
-        timeOfDay = "Evening"
+class AppHeader extends Component{
+    constructor(props) {
+        super(props);
+        this.state={
+            isLoggedIn:localStorage.getItem("isLoggedIn")
+        }
     }
 
-    const styles={
-        color: "#181b34",
-        backgroundColor: "#ff9b99",
-        fontSize: "24px"
+    doLogout() {
+        localStorage.clear()
+        this.setState({isLoggedIn:false});
+        //alert("You have been successfully logged out");
     }
+
+    componentDidMount() {
+        if(!this.state.isLoggedIn)
+            return <Redirect to="/" />
+        else
+            return <Redirect to="/home" />
+    }
+
+
+    render(){
+        const date = new Date()
+        const hours = date.getHours()
+        let timeOfDay
+
+        if (hours < 12) {
+            timeOfDay = "Morning"
+        } else if (hours >= 12 && hours < 17) {
+            timeOfDay = "Afternoon"
+        } else {
+            timeOfDay = "Evening"
+        }
+
+        const styles={
+            color: "#181b34",
+            backgroundColor: "#ff9b99",
+            fontSize: "24px"
+        }
     return(
         <div>
             {/*<header style={styles}> Good {timeOfDay}</header>*/}
@@ -30,15 +52,21 @@ function AppHeader() {
                         <ul id="nav-mobile">
                             {
                                 localStorage.getItem("isLoggedIn")?
-                                <li className="left"><i>Good {timeOfDay} {localStorage.getItem("loggedUsername")}</i></li>
+                                    <li className="left"><i>Good {timeOfDay} {localStorage.getItem("loggedUsername")}</i></li>
                                     : null
 
                             }
                             <li className="right "><a href="facebook.com"><i className="material-icons">account_circle</i></a></li>
                             <li className="right "><a href="instagram.com"><i className="material-icons">shopping_cart</i></a></li>
-                            <li className="right "><Link to="/"><i className="material-icons">vpn_key</i></Link></li>
+                            {
+                                !localStorage.getItem("isLoggedIn")
+                                    // ? <li className="right "><Link to="/logout"><i className="material-icons">power_settings_new</i></Link></li>
+                                    // : <li className="right "><Link to="/"><i className="material-icons">power_settings_new</i></Link></li>
+                                    ? <li className="right "><Link to="/login"><i className="material-icons">LOGIN</i></Link></li>
+                                    : <li className="right "><i className="material-icons" onClick={this.doLogout.bind(this)}>LOGOUT</i></li>
+                            }
 
-                            {/*<Link to={"about"}>ABOUT</Link>*/}
+
 
                         </ul>
                     </div>
@@ -46,6 +74,7 @@ function AppHeader() {
             </div>
         </div>
     )
+}
 
 }
 

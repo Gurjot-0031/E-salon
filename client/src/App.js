@@ -5,7 +5,6 @@ import Login from "./components/Login";
 import AppHeader from "./components/AppHeader";
 import AppFooter from "./components/AppFooter";
 import Protected from "./components/Protected";
-import SignUp from "./components/SignUp"
 import {BrowserRouter as Router, Switch, Link, Route, Redirect} from 'react-router-dom';
 
 class App extends Component{
@@ -36,14 +35,17 @@ class App extends Component{
                             {/*<Home />*/}
                             <AppHeader/>
                             {/*<Protected cmp={AppHeader}/>*/}
-                            <Protected cmp={Products} appState = {this.state.isLoggedIn}/>
+                            <Protected cmp={Products}/>
                             <AppFooter/>
                             {/*<Protected cmp={AppFooter}/>*/}
                         </Route>
-                        <Route path="/">
+                        <Route path="/login">
                             <Login/>
-                            {/*<LoginAndSignUp />*/}
                         </Route>
+                        <Route path="/">
+                            <AppHeader/>
+                        </Route>
+
                     </Switch>
                 </Router>
             </div>

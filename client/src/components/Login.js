@@ -42,11 +42,18 @@ export default class Login extends Component{
                  console.log(this.state)
              })
             .catch(error=>console.log("ERROR WHILE LOGGING IN "+error));
+    }
+    componentDidMount() {
+        this.login();
+    }
 
+    componentWillUnmount() {
     }
 
 
     render() {
+        if(this.state.isLoggedIn)
+            return <Redirect to={"/home"}/>
         let st = {
             //backgroundImage: url("/pics/loginBack.jpg"),
             backgroundColor: "#b2c4bd"

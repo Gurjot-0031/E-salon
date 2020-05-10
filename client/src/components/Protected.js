@@ -5,7 +5,7 @@ function Protected(props){
     let auth = localStorage.getItem("isLoggedIn");
     console.warn(auth);
     return <div>
-        {auth ? <Comp /> : <Redirect to="login"></Redirect>}
+        {auth != undefined ? <Comp /> : <Redirect to="login"></Redirect>}
            </div>
 }
 export default Protected;
