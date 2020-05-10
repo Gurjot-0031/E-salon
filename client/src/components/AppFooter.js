@@ -10,9 +10,7 @@ function AppFooter() {
     return(
         <div>
         {/*<header style={styles}> Good {timeOfDay}</header>*/}
-            <div className="fixed-action-btn">
-                <button className="btn-large waves-ripple " style={styles}>BOOK</button>
-            </div>
+
         </div>
 
 

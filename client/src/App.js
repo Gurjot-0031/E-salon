@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import AppHeader from "./components/AppHeader";
 import AppFooter from "./components/AppFooter";
 import Protected from "./components/Protected";
+import BookAppointment from "./components/BookAppointment";
 import {BrowserRouter as Router, Switch, Link, Route, Redirect} from 'react-router-dom';
 
 class App extends Component{
@@ -44,6 +45,10 @@ class App extends Component{
                         </Route>
                         <Route path="/">
                             <AppHeader/>
+                        </Route>
+                        <Route path="/bookAppointment">
+                            <AppHeader/>
+                            <BookAppointment/>
                         </Route>
 
                     </Switch>

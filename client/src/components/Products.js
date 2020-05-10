@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import SingleProduct from "./SingleProduct";
+import {Redirect} from 'react-router-dom';
 
 export default class Products extends Component{
     constructor(props) {
@@ -23,8 +24,6 @@ export default class Products extends Component{
             this.setState(
                 {selectedProducts:this.state.selectedProducts.filter(item=>item.id!==id)
                 })
-
-
             buttonElement.innerHTML="ADD";
             buttonElement.style.backgroundColor="green"
 
@@ -48,18 +47,6 @@ export default class Products extends Component{
             .then(response=>response.json())
             .then(data=>this.setState({products:data}));
 
-        // axios.get({
-        //     url: 'http://localhost:8080/rest/products/all',
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         //"Authorization": "Bearer "+localStorage.getItem("auth"),
-        //         //"Access-Control-Allow-Origin": "*",
-        //         //"Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-        //         //"Access-Control-Allow-Headers": "append,delete,entries,foreach,get,has,keys,set,values,Authorization"
-        //     }, withCredentials: true
-        // }).then(response => {
-        //     console.log('Logout ', response);
-        // })
     }
 
     render()
@@ -70,9 +57,9 @@ export default class Products extends Component{
             height:"10%"
         }
         return (
-            <div>
+            <div style={st}>
                 {/*<div><p>E-Salon</p></div>*/}
-                <div style={st}>
+                <div >
                     <div className="nav-title" >
                         <nav style={st}>
                             <div className="row">
@@ -86,7 +73,17 @@ export default class Products extends Component{
                         handleToggle={this.handleToggle}/>
                     ))}
                 </div>
+                <div className="fixed-action-btn">
+                    <button
+                        className="btn-large waves-ripple"
+                        onClick={this.handleBooking.bind(this)}
+                    >BOOK</button>
+                </div>
             </div>
         )
+    }
+
+    handleBooking() {
+        return <Redirect to={"/bookAppointment"}/>
     }
 }
