@@ -32,24 +32,30 @@ class App extends Component{
                         {/*<Route path={"/about"}>*/}
                         {/*    <About />*/}
                         {/*</Route>*/}
-                        <Route path="/home">
+                        <Route path="/home" strict exact>
                             {/*<Home />*/}
                             <AppHeader/>
                             {/*<Protected cmp={AppHeader}/>*/}
                             <Protected cmp={Products}/>
-                            <AppFooter/>
+                            {/*<AppFooter/>*/}
                             {/*<Protected cmp={AppFooter}/>*/}
-                        </Route>
-                        <Route path="/login">
+                        </Route >
+                        <Route path="/login" strict exact>
                             <Login/>
                         </Route>
-                        <Route path="/">
+                        <Route path="/bookAppointment" strict exact>
+                            <AppHeader/>
+                            {/*<div>GELOPIEHKJBFHSDFKj</div>*/}
+                            {/*{console.log("kjdfhgdsulkb")}*/}
+                            <BookAppointment
+                                selectedProducts = {this.props.selectedProducts}
+                            />
+
+                        </Route>
+                        <Route path="/" strict exact>
                             <AppHeader/>
                         </Route>
-                        <Route path="/bookAppointment">
-                            <AppHeader/>
-                            <BookAppointment/>
-                        </Route>
+
 
                     </Switch>
                 </Router>

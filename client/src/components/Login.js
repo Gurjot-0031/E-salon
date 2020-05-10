@@ -4,7 +4,6 @@ import SignUp from "./SignUp";
 import {Redirect} from 'react-router-dom';
 
 export default class Login extends Component{
-    _isMounted = false;
     constructor(props) {
         super(props);
         this.state={
@@ -48,12 +47,10 @@ export default class Login extends Component{
             .catch(error=>console.log("ERROR WHILE LOGGING IN "+error));
     }
     componentDidMount() {
-        this._isMounted = true;
         this.login();
     }
 
     componentWillUnmount() {
-        this._isMounted = false;
         this.state=null;
     }
 

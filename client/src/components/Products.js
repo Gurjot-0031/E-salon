@@ -6,6 +6,7 @@ export default class Products extends Component{
     constructor(props) {
         super(props);
         this.state={
+            redirectToBooking:false,
             products:[],
             selectedProducts: []
         };
@@ -56,8 +57,12 @@ export default class Products extends Component{
             backgroundColor: "#b2c4bd",
             height:"10%"
         }
+        if(this.state.redirectToBooking)
+
+            return <Redirect to={'/bookAppointment'}/>;
         return (
             <div style={st}>
+
                 {/*<div><p>E-Salon</p></div>*/}
                 <div >
                     <div className="nav-title" >
@@ -84,6 +89,20 @@ export default class Products extends Component{
     }
 
     handleBooking() {
-        return <Redirect to={"/bookAppointment"}/>
+        //setting state calls the render automatically
+        // this.setState(prevState=>
+        //     ({redirectToBooking : !prevState.redirectToBooking})
+        // );
+        this.setState({redirectToBooking:true});
     }
+    // renderRedirectToBooking(){
+    //     if(this.state.redirectToBooking){
+    //         //console.log("jghsukdjh,sf");
+    //         // return <Redirect to={{
+    //         //     pathname:"/bookAppointment",
+    //         //     state:{selectedProducts: this.state.selectedProducts}
+    //         // }} />
+    //         return <Redirect to={'/bookAppointment'}/>
+    //     }
+    // }
 }
