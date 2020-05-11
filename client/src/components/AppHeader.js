@@ -67,7 +67,7 @@ class AppHeader extends Component{
                                     : <li className="right "><Link><i className="material-icons" onClick={this.doLogout.bind(this)}>LOGOUT</i></Link></li>
                             }
                             {
-                                (!this.state.isLoggedIn) ? <Redirect to="/login" /> :  <Redirect to="/home" />
+                                (!this.state.isLoggedIn) ? <Redirect to="/login" /> :  null
                             }
 
 

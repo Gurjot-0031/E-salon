@@ -6,7 +6,7 @@ import AppHeader from "./components/AppHeader";
 import AppFooter from "./components/AppFooter";
 import Protected from "./components/Protected";
 import BookAppointment from "./components/BookAppointment";
-import {BrowserRouter as Router, Switch, Link, Route, Redirect} from 'react-router-dom';
+import {BrowserRouter , Switch, Link, Route, Redirect} from 'react-router-dom';
 
 class App extends Component{
     constructor(props) {
@@ -24,7 +24,7 @@ class App extends Component{
                 {/*/!*<Login/>*!/*/}
                 {/*<Products />*/}
                 {/*<AppFooter/>*/}
-                <Router>
+                <BrowserRouter>
                     {/*<Link to="home">HOME</Link>*/}
                     {/*/!*<Link to={"about"}>ABOUT</Link>*!/*/}
                     {/*<Link to="/">LOGIN</Link>*/}
@@ -32,33 +32,22 @@ class App extends Component{
                         {/*<Route path={"/about"}>*/}
                         {/*    <About />*/}
                         {/*</Route>*/}
-                        <Route path="/home" strict exact>
-                            {/*<Home />*/}
-                            <AppHeader/>
-                            {/*<Protected cmp={AppHeader}/>*/}
-                            <Protected cmp={Products}/>
-                            {/*<AppFooter/>*/}
-                            {/*<Protected cmp={AppFooter}/>*/}
-                        </Route >
+                        <Route path="/home" strict exact component={Products}/>
+                            {/*//to be fixed*/}
+                            {/*<Protected cmp={Products}/>*/}
+
                         <Route path="/login" strict exact>
                             <Login/>
                         </Route>
-                        <Route path="/bookAppointment" strict exact>
-                            <AppHeader/>
-                            {/*<div>GELOPIEHKJBFHSDFKj</div>*/}
-                            {/*{console.log("kjdfhgdsulkb")}*/}
-                            <BookAppointment
-                                selectedProducts = {this.props.selectedProducts}
-                            />
+                        <Route path="/bookAppointment" component={BookAppointment} strict exact />
 
-                        </Route>
                         <Route path="/" strict exact>
                             <AppHeader/>
                         </Route>
 
 
                     </Switch>
-                </Router>
+                </BrowserRouter>
             </div>
         );
     }

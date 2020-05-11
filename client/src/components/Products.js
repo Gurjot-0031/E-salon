@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import SingleProduct from "./SingleProduct";
 import {Redirect} from 'react-router-dom';
+import AppHeader from "./AppHeader";
 
 export default class Products extends Component{
     constructor(props) {
@@ -57,12 +58,17 @@ export default class Products extends Component{
             backgroundColor: "#b2c4bd",
             height:"10%"
         }
-        if(this.state.redirectToBooking)
-
-            return <Redirect to={'/bookAppointment'}/>;
+        if(this.state.redirectToBooking) {
+            return <Redirect push to= {
+                {pathname: "/bookAppointment",
+                state: {
+                selectedProducts: this.state.selectedProducts}
+            }
+            }/>;
+        }
         return (
             <div style={st}>
-
+                <AppHeader/>
                 {/*<div><p>E-Salon</p></div>*/}
                 <div >
                     <div className="nav-title" >
@@ -89,20 +95,6 @@ export default class Products extends Component{
     }
 
     handleBooking() {
-        //setting state calls the render automatically
-        // this.setState(prevState=>
-        //     ({redirectToBooking : !prevState.redirectToBooking})
-        // );
         this.setState({redirectToBooking:true});
     }
-    // renderRedirectToBooking(){
-    //     if(this.state.redirectToBooking){
-    //         //console.log("jghsukdjh,sf");
-    //         // return <Redirect to={{
-    //         //     pathname:"/bookAppointment",
-    //         //     state:{selectedProducts: this.state.selectedProducts}
-    //         // }} />
-    //         return <Redirect to={'/bookAppointment'}/>
-    //     }
-    // }
 }
