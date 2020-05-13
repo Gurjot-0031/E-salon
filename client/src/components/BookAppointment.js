@@ -11,19 +11,26 @@ export  default class BookAppointment extends Component {
         }
         //this.removeItem = this.removeItem.bind(this);
     }
+    componentDidMount() {
+        this.setState(prevState=>({
+            totalCost: prevState.items.map(item=>item.price)
+                .reduce((item1Price,item2Price)=>item1Price+item2Price,0),
+            totalTime: prevState.items.map(item=>item.estimatedTime)
+                .reduce((item1Time,item2Time)=>item1Time+item2Time,0),
+            items:prevState.items
+        }))
+    }
+
     removeItem(passedItem){
         console.log(passedItem);
         console.log("HELO")
-        // this.setState(prevState=>(
-        //     {
-        //         totalCost: prevState.totalCost,
-        //         totalTime: prevState.totalTime,
-        //         items: prevState.items.filter(item => (item.id !== itemId))
-        //     }
-        // ))
-        let newItems = this.state.items.filter(item => (item.id !== passedItem.id));
-        //console.log(newItems);
-        this.setState({items:newItems});
+        this.setState(prevState=>(
+            {
+                totalCost: (prevState.totalCost - passedItem.price),
+                totalTime: (prevState.totalTime - passedItem.estimatedTime),
+                items: prevState.items.filter(item => (item.id !== passedItem.id))
+            }
+        ))
     }
     render() {
         console.log(this.state.items);
@@ -35,12 +42,15 @@ export  default class BookAppointment extends Component {
                 <AppHeader/>
                <div className="container">
                     <h5 className="left-align">Your selected services..</h5>
-                   <div className={"row"}>
-                       <div className={"col s3"}>Service</div>
-                       <div className={"col s3"}>Price</div>
-                       <div className={"col s3"}>Estimated time</div>
-                       <div className={"col s3"}>Remove</div>
-                   </div>
+                   {(this.state.items.length !== 0)
+                       ?<div className={"row"}>
+                           <div className={"col s3"}>Service</div>
+                           <div className={"col s3"}>Price</div>
+                           <div className={"col s3"}>Estimated time</div>
+                           <div className={"col s3"}>Remove</div>
+                       </div>
+                       :<div>Your booking cart is empty</div>
+                   }
                     {this.state.items.map(item=>(
                         <div className={"row"} key={item.id}>
                             <div className={"col s3"}>
@@ -66,10 +76,29 @@ export  default class BookAppointment extends Component {
                             </div>
                         </div>
                     ))}
+
                     <div>
 
                     </div>
                 </div>
+                {(this.state.items.length !== 0)
+                    ?<div>
+                        <div className={"row"}>
+                            <div className={"col s6"}>Total price</div>
+                            <div className={"col s2"}>${this.state.totalCost}</div>
+                        </div>
+                        <div className={"row"}>
+                            <div className={"col s6"}>Total time</div>
+                            <div className={"col s2"}>{this.state.totalTime} minutes</div>
+                        </div>
+                        <div className={"row"}>
+                            <div className={"col s6"}>Total time</div>
+                            <div className={"col s2"}>{this.state.totalTime} minutes</div>
+                        </div>
+                    </div>
+                    :null
+                }
+
             </div>
         );
     }
