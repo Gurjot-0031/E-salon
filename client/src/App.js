@@ -8,6 +8,7 @@ import Protected from "./components/Protected";
 import BookAppointment from "./components/BookAppointment";
 import {BrowserRouter , Switch, Link, Route, Redirect} from 'react-router-dom';
 
+
 class App extends Component{
     constructor(props) {
         super(props);

@@ -49,3 +49,8 @@
 body{
   margin: 0;
 }
+
+.schedulePicker{
+  background-color: #f7ffe0;
+  padding: 5%;
+}

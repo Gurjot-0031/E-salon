@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
 import AppHeader from "./AppHeader";
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
+import {useState} from "react";
+import MyDateTimePicker from "./MyDateTimePicker";
 
 export  default class BookAppointment extends Component {
     constructor(props) {
@@ -9,9 +13,11 @@ export  default class BookAppointment extends Component {
             totalTime:0,
             items:this.props.location.state.selectedProducts
         }
+
         //this.removeItem = this.removeItem.bind(this);
     }
     componentDidMount() {
+
         this.setState(prevState=>({
             totalCost: prevState.items.map(item=>item.price)
                 .reduce((item1Price,item2Price)=>item1Price+item2Price,0),
@@ -32,11 +38,14 @@ export  default class BookAppointment extends Component {
             }
         ))
     }
+
     render() {
+
         console.log(this.state.items);
         // console.log(this.state.totalCost)
         // console.log(this.state.totalTime)
         // console.log(this.props.location.state);
+
         return (
             <div>
                 <AppHeader/>
@@ -73,13 +82,11 @@ export  default class BookAppointment extends Component {
                                     >
                                     REMOVE
                                 </button>
+
                             </div>
                         </div>
                     ))}
 
-                    <div>
-
-                    </div>
                 </div>
                 {(this.state.items.length !== 0)
                     ?<div>
@@ -91,15 +98,28 @@ export  default class BookAppointment extends Component {
                             <div className={"col s6"}>Total time</div>
                             <div className={"col s2"}>{this.state.totalTime} minutes</div>
                         </div>
-                        <div className={"row"}>
-                            <div className={"col s6"}>Total time</div>
-                            <div className={"col s2"}>{this.state.totalTime} minutes</div>
+                        <div className={"row schedulePicker"}>
+                            <div className={"col s8"}>
+                                <MyDateTimePicker/>
+                            </div>
+                            {/*<div className={"col s4"}>*/}
+                            {/*    <MyDateTimePicker/>*/}
+                            {/*</div>*/}
+                            <button
+                                className='btn-small'
+                                onClick={this.doBooking.bind(this)}>
+                                BOOK
+                            </button>
                         </div>
+
                     </div>
                     :null
                 }
 
             </div>
         );
+    }
+    doBooking() {
+
     }
 }
