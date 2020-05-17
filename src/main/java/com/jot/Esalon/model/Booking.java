@@ -10,8 +10,8 @@ public class Booking {
     @Id
     @GeneratedValue
     private int bookingId;
-    private Date startTime;
-    private Date endTime;
+    private Date startDateTime;
+    private Date endDateTime;
 
     public Booking() {
     }
@@ -24,19 +24,19 @@ public class Booking {
         this.bookingId = bookingId;
     }
 
-    public Date getStartTime() {
-        return startTime;
+    public Date getStartDateTime() {
+        return startDateTime;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setStartDateTime(Date startDateTime) {
+        this.startDateTime = startDateTime;
     }
 
-    public Date getEndTime() {
-        return endTime;
+    public Date getEndDateTime() {
+        return endDateTime;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setEndDateTime(Date endDateTime) {
+        this.endDateTime = endDateTime;
     }
 }

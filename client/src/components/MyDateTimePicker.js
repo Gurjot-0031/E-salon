@@ -12,13 +12,16 @@ function MyDateTimePicker(props) {
 
     return (
         <div>
+
+                {props.alreadyBooked.map(item=><p>{item.startDateTime}</p>)}
+
             <AvailableTimes
                 weekStartsOn="monday"
                 onChange={(selections) => {
                     selections.forEach(({ start, end }) => {
                         selectedRange.start=start;
                         selectedRange.end=end;
-                        console.log('Start:', selectedRange.start, 'End:', selectedRange.end);
+                        //console.log('Start:', selectedRange.start, 'End:', selectedRange.end);
                     })
                 }}
                 // onEventsRequested={({ calendarId, start, end, callback }) => {
@@ -28,7 +31,13 @@ function MyDateTimePicker(props) {
                 //     { start: aDateObject, end: anotherDateObject }
                 // ]}
                 initialSelections={
-                    props.alreadyBooked.map(rangeItem=>rangeItem)
+                    props.alreadyBooked.map(rangeItem =>  {
+                        console.log(new Date(rangeItem.startDateTime))
+                            return {
+                                start:new Date(rangeItem.startDateTime),
+                                end:new Date(rangeItem.endDateTime)
+                            }
+                        })
                 }
                 height={400}
                 recurring={false}

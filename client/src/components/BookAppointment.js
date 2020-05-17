@@ -9,7 +9,7 @@ export  default class BookAppointment extends Component {
     constructor(props) {
         super(props);
         this.state={
-            alreadyBooked: {},
+            alreadyBooked: [],
             totalCost:0,
             totalTime:0,
             items:this.props.location.state.selectedProducts
@@ -21,17 +21,12 @@ export  default class BookAppointment extends Component {
         fetch("http://localhost:8080/rest/bookings/all",
             {  method:"GET",
                 headers: {
-                    // "Accept": "application/json",
                     "Content-Type": "application/json",
-                    //"Authorization": "Bearer "+localStorage.getItem("auth"),
-                    //"Access-Control-Allow-Origin": "*",
-                    //"Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-                    //"Access-Control-Allow-Headers": "append,delete,entries,foreach,get,has,keys,set,values,Authorization"
                 }
             }
         )
             .then(response=>response.json())
-            .then(data=>this.setState({products:data}));
+            .then(data=>this.setState({alreadyBooked:data}));
 
         this.setState(prevState=>({
             totalCost: prevState.items.map(item=>item.price)
@@ -43,8 +38,8 @@ export  default class BookAppointment extends Component {
     }
 
     removeItem(passedItem){
-        console.log(passedItem);
-        console.log("HELO")
+        // console.log(passedItem);
+        // console.log("HELO")
         this.setState(prevState=>(
             {
                 totalCost: (prevState.totalCost - passedItem.price),
@@ -56,7 +51,7 @@ export  default class BookAppointment extends Component {
 
     render() {
 
-        console.log(this.state.items);
+        // console.log(this.state.items);
         // console.log(this.state.totalCost)
         // console.log(this.state.totalTime)
         // console.log(this.props.location.state);
@@ -115,7 +110,7 @@ export  default class BookAppointment extends Component {
                         </div>
                         <div className={"row schedulePicker"}>
                             <div className={"col s8"}>
-                                <MyDateTimePicker/>
+                                <MyDateTimePicker alreadyBooked={this.state.alreadyBooked}/>
                             </div>
                             {/*<div className={"col s4"}>*/}
                             {/*    <MyDateTimePicker/>*/}
