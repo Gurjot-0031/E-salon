@@ -9,6 +9,7 @@ export  default class BookAppointment extends Component {
     constructor(props) {
         super(props);
         this.state={
+            alreadyBooked: {},
             totalCost:0,
             totalTime:0,
             items:this.props.location.state.selectedProducts
@@ -17,6 +18,20 @@ export  default class BookAppointment extends Component {
         //this.removeItem = this.removeItem.bind(this);
     }
     componentDidMount() {
+        fetch("http://localhost:8080/rest/bookings/all",
+            {  method:"GET",
+                headers: {
+                    // "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    //"Authorization": "Bearer "+localStorage.getItem("auth"),
+                    //"Access-Control-Allow-Origin": "*",
+                    //"Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+                    //"Access-Control-Allow-Headers": "append,delete,entries,foreach,get,has,keys,set,values,Authorization"
+                }
+            }
+        )
+            .then(response=>response.json())
+            .then(data=>this.setState({products:data}));
 
         this.setState(prevState=>({
             totalCost: prevState.items.map(item=>item.price)
