@@ -1,49 +1,62 @@
 import React, {useState} from 'react';
-import AvailableTimes from 'react-available-times';
 
 function MyDateTimePicker(props) {
     const [selectedRange,setSelectedRange] = useState(
         {
+            selectedDate:'',
+            selectedMonth:'',
+            selectedYear:'',
             start: '',
             end: ''
         }
     );
 
+    let temp = [];
+    let monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    let today = new Date();
+    let dateToday = today.getDate();
+    let thisMonth = today.getMonth();
+    let thisYear = today.getFullYear();
+    for (let i = 0; i < 8; i++) {
+        temp.push(new Date(thisYear,thisMonth,dateToday+i));
+    }
+
+
+    function showAvailabilities(date,month,year) {
+        //alert("sdkfbgl")
+        setSelectedRange({
+            selectedDate: date,
+            selectedMonth: month,
+            selectedYear: year,
+            start:"45",
+            end:"56"}
+            )
+
+    }
 
     return (
-        <div>
+        <div className={"row"}>
+                {
+                    temp.map(item =>
+                        <button className="col s3"
+                        onClick={
+                            (e) =>
+                                showAvailabilities(item.getDate(),item.getMonth(),item.getYear(),e)}>
+                            {item.getDate() +"-"+ monthNames[item.getMonth()]}
+                        </button>
 
-                {props.alreadyBooked.map(item=><p>{item.startDateTime}</p>)}
-
-            <AvailableTimes
-                weekStartsOn="monday"
-                onChange={(selections) => {
-                    selections.forEach(({ start, end }) => {
-                        selectedRange.start=start;
-                        selectedRange.end=end;
-                        //console.log('Start:', selectedRange.start, 'End:', selectedRange.end);
-                    })
-                }}
-                // onEventsRequested={({ calendarId, start, end, callback }) => {
-                //     loadMoreEvents(calendarId, start, end).then(callback);
-                // }}
-                // initialSelections={[
-                //     { start: aDateObject, end: anotherDateObject }
-                // ]}
-                initialSelections={
-                    props.alreadyBooked.map(rangeItem =>  {
-                        console.log(new Date(rangeItem.startDateTime))
-                            return {
-                                start:new Date(rangeItem.startDateTime),
-                                end:new Date(rangeItem.endDateTime)
-                            }
-                        })
+                    )
                 }
-                height={400}
-                recurring={false}
-                availableDays={['monday', 'tuesday', 'wednesday', 'thursday', 'friday','saturday']}
-                availableHourRange={{ start: 10, end: 19 }}
-            />
+
+                {(selectedRange.selectedDate)
+                    ? <div>Slots available for
+                        {
+                            " "+selectedRange.selectedDate +"-"+ monthNames[selectedRange.selectedMonth]
+                        }
+                      </div>
+                    : null}
         </div>
     );
 }

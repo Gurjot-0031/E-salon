@@ -110,7 +110,8 @@ export  default class BookAppointment extends Component {
                         </div>
                         <div className={"row schedulePicker"}>
                             <div className={"col s8"}>
-                                <MyDateTimePicker alreadyBooked={this.state.alreadyBooked}/>
+                                <MyDateTimePicker key = {this.state.alreadyBooked.bookingId}
+                                                  alreadyBooked={this.state.alreadyBooked}/>
                             </div>
                             {/*<div className={"col s4"}>*/}
                             {/*    <MyDateTimePicker/>*/}
