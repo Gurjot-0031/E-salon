@@ -66,23 +66,53 @@ export default class SchedulePicker extends Component{
                     min = 0;
                     hour++;
                 }
-            totalTimeSlots.push(new Date(
-                this.state.selectedYear,
-                this.state.selectedMonth,
-                this.state.selectedDate,
-                hour,min
-            ))
+            totalTimeSlots.push({
+                start: new Date(
+                    this.state.selectedYear,
+                    this.state.selectedMonth,
+                    this.state.selectedDate,
+                    hour,min
+                ),
+                end: new Date(
+                    this.state.selectedYear,
+                    this.state.selectedMonth,
+                    this.state.selectedDate,
+                    parseInt((hour*60 + min + this.state.totalServiceTime)/60),         //hours
+                    (hour*60 + min + this.state.totalServiceTime)%60                       //minutes
+                )
+            })
         }
 
-        // let availableTimeSlots = totalTimeSlots
-        //     .filter(i => )
+        let selectedDayAlreadyBookedSlots =[]
+        if(this.state.selectedDate){
+            selectedDayAlreadyBookedSlots = this.state.alreadyBooked
+                .filter(i=>{
+                    if(i.startDateTime === null || i.startDateTime === undefined)
+                        return null
+                    else if((i.startDateTime.substr(8,2) == this.state.selectedDate)){
+                        console.log(i.startDateTime.substr(8,2) + '   '+ this.state.selectedDate)
+                        return i
+                    }
+                })
+        }
 
+        function isClear(i) {
+            for (let j = 0; j < selectedDayAlreadyBookedSlots.length; j++) {
+                if(i.end.getHours() < selectedDayAlreadyBookedSlots[j].startDateTime.substr(11,2)
+                    || i.start.getHours() > selectedDayAlreadyBookedSlots[j].endDateTime.substr(11,2)){
+                    return true;
+                }
+            }
+            return false;
+        }
 
+        let availableTimeSlots = totalTimeSlots
+             .filter(i => (isClear(i)) ? i : null)
 
 
         return (
             <div className={"row"}>
-                {this.state.alreadyBooked
+                {selectedDayAlreadyBookedSlots
                     .map(i=><p>{i.startDateTime} to {i.endDateTime}</p>)}
                 {
                     temp.map(item =>
@@ -96,17 +126,17 @@ export default class SchedulePicker extends Component{
                     ? <div>
                         <div>Slots for{" "+this.state.selectedDate +"-"+ monthNames[this.state.selectedMonth]}</div>
                         <div className='col s4'>
-                            {totalTimeSlots.map(slot=>
+                            {availableTimeSlots.map(slot=>
                                 <div className="row">
-                                    {slot.getHours() }:{ slot.getMinutes()+' '}
+                                    {slot.start.getHours() }:{ slot.start.getMinutes()+' '}
                                     to{' '}
-                                    { parseInt((slot.getHours()*60 + slot.getMinutes() + this.state.totalServiceTime)/60)}
-                                    : {(slot.getHours()*60 + slot.getMinutes() + this.state.totalServiceTime)%60}
+                                    { slot.end.getHours()}
+                                    : {slot.end.getMinutes()}
                                 </div>)
                             }
                         </div>
                         <div className='col s4'>
-                            {totalTimeSlots.map(slot=>
+                            {availableTimeSlots.map(slot=>
                                 <div className='row'><button>SELECT</button></div>)
                             }
                         </div>
