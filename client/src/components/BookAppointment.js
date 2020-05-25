@@ -1,45 +1,27 @@
 import React, {Component} from 'react';
 import AppHeader from "./AppHeader";
-import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
-import {useState} from "react";
-import MyDateTimePicker from "./MyDateTimePicker";
+import SchedulePicker from "./SchedulePicker";
 
 export  default class BookAppointment extends Component {
     constructor(props) {
         super(props);
         this.state={
-            alreadyBooked: [],
-            totalCost:0,
-            totalTime:0,
+            totalCost:this.props.location.state.selectedProducts
+                .map(item=>item.price)
+                .reduce((item1Price,item2Price)=>item1Price+item2Price,0),
+            totalTime: this.props.location.state.selectedProducts
+                .map(item=>item.estimatedTime)
+                .reduce((item1Time,item2Time)=>item1Time+item2Time,0),
             items:this.props.location.state.selectedProducts
         }
 
         //this.removeItem = this.removeItem.bind(this);
     }
-    componentDidMount() {
-        fetch("http://localhost:8080/rest/bookings/all",
-            {  method:"GET",
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            }
-        )
-            .then(response=>response.json())
-            .then(data=>this.setState({alreadyBooked:data}));
-
-        this.setState(prevState=>({
-            totalCost: prevState.items.map(item=>item.price)
-                .reduce((item1Price,item2Price)=>item1Price+item2Price,0),
-            totalTime: prevState.items.map(item=>item.estimatedTime)
-                .reduce((item1Time,item2Time)=>item1Time+item2Time,0),
-            items:prevState.items
-        }))
+     componentDidMount() {
     }
 
     removeItem(passedItem){
-        // console.log(passedItem);
-        // console.log("HELO")
         this.setState(prevState=>(
             {
                 totalCost: (prevState.totalCost - passedItem.price),
@@ -110,8 +92,10 @@ export  default class BookAppointment extends Component {
                         </div>
                         <div className={"row schedulePicker"}>
                             <div className={"col s8"}>
-                                <MyDateTimePicker key = {this.state.alreadyBooked.bookingId}
-                                                  alreadyBooked={this.state.alreadyBooked}/>
+                                {/*{this.state.alreadyBooked.map(i=><p>{i.startDateTime}</p>)}*/}
+                                <SchedulePicker
+                                    passedState = {this.state}
+                                />
                             </div>
                             {/*<div className={"col s4"}>*/}
                             {/*    <MyDateTimePicker/>*/}
