@@ -54,3 +54,9 @@ body{
   background-color: #f7ffe0;
   padding: 5%;
 }
+
+.slotButton{
+  width:90%;
+  margin:5%;
+  padding: 0px 5px 5px 5px;
+}

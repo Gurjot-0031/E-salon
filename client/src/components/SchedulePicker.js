@@ -133,8 +133,8 @@ export default class SchedulePicker extends Component{
                 {
                     <div className={'col s1'}>
                         {temp.map(item =>
-                            <button className="row"
-                                    style={{'padding':'6px','margin':'6px'}}
+                            <button className="btn row "
+                                    style={{'padding':'15%','margin':'15%', 'width':'150%', 'height':'70%'}}
                                     onClick={e => (this.showAvailabilities(item,e))}>
                                 {item.getDate() +"-"+ monthNames[item.getMonth()]}
                             </button>
@@ -143,23 +143,23 @@ export default class SchedulePicker extends Component{
                 }
                 {(this.state.selectedDate)
                     ? <div>
-                        <div className='col s6 offset-s2'>
-                            <div className={'row'} style={{'padding':'20px'}}>
+                        <div className='col s8 offset-s2'>
+                            <div className={'row'} style={{'padding':'5% 5% 5% 5%'}}>
                                 <h5>
                                     Available Slots for{" "+this.state.selectedDate +"-"+ monthNames[this.state.selectedMonth]}
                                 </h5>
                             </div>
                             {availableTimeSlots.map(slot=>
-                                    <div className={'row'}>
-                                        <div className={'col s4'}>
-                                            {slot.start.getHours() }:{ slot.start.getMinutes()+' '}
-                                            to{' '}
-                                            { slot.end.getHours()}
-                                            : {slot.end.getMinutes()}
+                                    <div className={'col s3'}>
+                                        <div className={'row '}>
+                                            <button className='slotButton btn-small '>
+                                                {slot.start.getHours() }:{ slot.start.getMinutes()+' '}
+                                                -{' '}
+                                                { slot.end.getHours()}
+                                                : {slot.end.getMinutes()}
+                                            </button>
                                         </div>
-                                        <div className={'col s2'}>
-                                            <button>CHOOSE</button>
-                                        </div>
+
                                     </div>)
                             }
                         </div>
