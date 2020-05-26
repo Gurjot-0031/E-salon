@@ -37,12 +37,7 @@ export default class Products extends Component{
         fetch("http://localhost:8080/rest/products/all",
             {  method:"GET",
                 headers: {
-                    // "Accept": "application/json",
                     "Content-Type": "application/json",
-                    //"Authorization": "Bearer "+localStorage.getItem("auth"),
-                    //"Access-Control-Allow-Origin": "*",
-                    //"Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
-                    //"Access-Control-Allow-Headers": "append,delete,entries,foreach,get,has,keys,set,values,Authorization"
                 }
             }
             )

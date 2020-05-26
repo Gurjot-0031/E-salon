@@ -15,8 +15,6 @@ export  default class BookAppointment extends Component {
                 .reduce((item1Time,item2Time)=>item1Time+item2Time,0),
             items:this.props.location.state.selectedProducts
         }
-
-        //this.removeItem = this.removeItem.bind(this);
     }
      componentDidMount() {
     }
@@ -32,12 +30,6 @@ export  default class BookAppointment extends Component {
     }
 
     render() {
-
-        // console.log(this.state.items);
-        // console.log(this.state.totalCost)
-        // console.log(this.state.totalTime)
-        // console.log(this.props.location.state);
-
         return (
             <div>
                 <AppHeader/>
@@ -97,14 +89,6 @@ export  default class BookAppointment extends Component {
                                     passedState = {this.state}
                                 />
                             </div>
-                            {/*<div className={"col s4"}>*/}
-                            {/*    <MyDateTimePicker/>*/}
-                            {/*</div>*/}
-                            {/*<button*/}
-                            {/*    className='btn-small'*/}
-                            {/*    onClick={this.doBooking.bind(this)}>*/}
-                            {/*    BOOK*/}
-                            {/*</button>*/}
                         </div>
 
                     </div>

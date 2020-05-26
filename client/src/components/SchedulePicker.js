@@ -28,7 +28,6 @@ export default class SchedulePicker extends Component{
             .then(data=>this.setState({alreadyBooked:data}));
     }
     showAvailabilities(item) {
-        //alert("sdkfbgl")
         this.setState(prevState => (
                 {
                     totalServiceTime: prevState.totalServiceTime,
@@ -156,11 +155,6 @@ export default class SchedulePicker extends Component{
                                     </div>)
                             }
                         </div>
-                        {/*<div className='col s4'>*/}
-                        {/*    {availableTimeSlots.map(slot=>*/}
-                        {/*        <div className='row'><button>CHOOSE</button></div>)*/}
-                        {/*    }*/}
-                        {/*</div>*/}
                     </div>
                     : null}
             </div>
