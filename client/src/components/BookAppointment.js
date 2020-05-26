@@ -91,7 +91,7 @@ export  default class BookAppointment extends Component {
                             <div className={"col s2"}>{this.state.totalTime} minutes</div>
                         </div>
                         <div className={"row schedulePicker"}>
-                            <div className={"col s8"}>
+                            <div className={"col s12"}>
                                 {/*{this.state.alreadyBooked.map(i=><p>{i.startDateTime}</p>)}*/}
                                 <SchedulePicker
                                     passedState = {this.state}
@@ -100,11 +100,11 @@ export  default class BookAppointment extends Component {
                             {/*<div className={"col s4"}>*/}
                             {/*    <MyDateTimePicker/>*/}
                             {/*</div>*/}
-                            <button
-                                className='btn-small'
-                                onClick={this.doBooking.bind(this)}>
-                                BOOK
-                            </button>
+                            {/*<button*/}
+                            {/*    className='btn-small'*/}
+                            {/*    onClick={this.doBooking.bind(this)}>*/}
+                            {/*    BOOK*/}
+                            {/*</button>*/}
                         </div>
 
                     </div>

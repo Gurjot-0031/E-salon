@@ -54,8 +54,8 @@ export default class SchedulePicker extends Component{
         let thisMonth = today.getMonth();
         let thisYear = today.getFullYear();
 
-        //showing 9 days in future
-        for (let i = 0; i < 8; i++) {
+        //showing 11 days in future
+        for (let i = 0; i < 10; i++) {
             temp.push(new Date(thisYear,thisMonth,dateToday+i));
         }
 
@@ -102,44 +102,65 @@ export default class SchedulePicker extends Component{
                     || i.start.getHours() > selectedDayAlreadyBookedSlots[j].endDateTime.substr(11,2)){
                     return true;
                 }
+                if(i.end.getHours() == selectedDayAlreadyBookedSlots[j].startDateTime.substr(11,2)
+                    && i.end.getMinutes() == selectedDayAlreadyBookedSlots[j].startDateTime.substr(14,2)) {
+                    return true;
+                }
+                if(i.start.getHours() == selectedDayAlreadyBookedSlots[j].endDateTime.substr(11,2)
+                    && i.start.getMinutes() == selectedDayAlreadyBookedSlots[j].endDateTime.substr(14,2)) {
+                    return true;
+                }
             }
             return false;
         }
 
-        let availableTimeSlots = totalTimeSlots
-             .filter(i => (isClear(i)) ? i : null)
-
+        let availableTimeSlots
+        if(selectedDayAlreadyBookedSlots.length!=0)
+            availableTimeSlots = totalTimeSlots.filter(i => (isClear(i)) ? i : null)
+        else availableTimeSlots = totalTimeSlots
 
         return (
-            <div className={"row"}>
+            <div>
                 {selectedDayAlreadyBookedSlots
                     .map(i=><p>{i.startDateTime} to {i.endDateTime}</p>)}
                 {
-                    temp.map(item =>
-                        <button className="col s3"
-                                onClick={e => (this.showAvailabilities(item,e))}>
-                            {item.getDate() +"-"+ monthNames[item.getMonth()]}
-                        </button>
-                    )
+                    <div className={'col s1'}>
+                        {temp.map(item =>
+                            <button className="row"
+                                    style={{'padding':'6px','margin':'6px'}}
+                                    onClick={e => (this.showAvailabilities(item,e))}>
+                                {item.getDate() +"-"+ monthNames[item.getMonth()]}
+                            </button>
+                        )}
+                    </div>
                 }
                 {(this.state.selectedDate)
                     ? <div>
-                        <div>Slots for{" "+this.state.selectedDate +"-"+ monthNames[this.state.selectedMonth]}</div>
-                        <div className='col s4'>
+                        <div className='col s6 offset-s2'>
+                            <div className={'row'} style={{'padding':'20px'}}>
+                                <h5>
+                                    Available Slots for{" "+this.state.selectedDate +"-"+ monthNames[this.state.selectedMonth]}
+                                </h5>
+                            </div>
                             {availableTimeSlots.map(slot=>
-                                <div className="row">
-                                    {slot.start.getHours() }:{ slot.start.getMinutes()+' '}
-                                    to{' '}
-                                    { slot.end.getHours()}
-                                    : {slot.end.getMinutes()}
-                                </div>)
+                                    <div className={'row'}>
+                                        <div className={'col s4'}>
+                                            {slot.start.getHours() }:{ slot.start.getMinutes()+' '}
+                                            to{' '}
+                                            { slot.end.getHours()}
+                                            : {slot.end.getMinutes()}
+                                        </div>
+                                        <div className={'col s2'}>
+                                            <button>CHOOSE</button>
+                                        </div>
+                                    </div>)
                             }
                         </div>
-                        <div className='col s4'>
-                            {availableTimeSlots.map(slot=>
-                                <div className='row'><button>SELECT</button></div>)
-                            }
-                        </div>
+                        {/*<div className='col s4'>*/}
+                        {/*    {availableTimeSlots.map(slot=>*/}
+                        {/*        <div className='row'><button>CHOOSE</button></div>)*/}
+                        {/*    }*/}
+                        {/*</div>*/}
                     </div>
                     : null}
             </div>
