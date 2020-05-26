@@ -27,6 +27,14 @@ export default class SchedulePicker extends Component{
             .then(response=>response.json())
             .then(data=>this.setState({alreadyBooked:data}));
     }
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS): void {
+        //when the user removes an item in the parent component, service time changes there,,
+        // which should also reflect in the child(schedule picker component)
+        if(prevProps != this.props){
+            this.setState({totalServiceTime: this.props.passedState.totalTime})
+        }
+    }
+
     showAvailabilities(item) {
         this.setState(prevState => (
                 {
