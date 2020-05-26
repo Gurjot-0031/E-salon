@@ -14,6 +14,7 @@ export default class SchedulePicker extends Component{
             end: ''
         }
         this.showAvailabilities = this.showAvailabilities.bind(this);
+        this.bookSchedule = this.bookSchedule.bind(this);
     }
 
     componentDidMount() {
@@ -25,7 +26,13 @@ export default class SchedulePicker extends Component{
             }
         )
             .then(response=>response.json())
-            .then(data=>this.setState({alreadyBooked:data}));
+            .then(data=>this.setState({alreadyBooked:data.map(i=>{
+                    return {
+                        startDateTime:new Date(i.startDateTime),
+                            endDateTime:new Date(i.endDateTime)
+                    }
+                })}));
+
     }
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS): void {
         //when the user removes an item in the parent component, service time changes there,,
@@ -39,10 +46,10 @@ export default class SchedulePicker extends Component{
         this.setState(prevState => (
                 {
                     totalServiceTime: prevState.totalServiceTime,
-                    booked:prevState.booked,
+                    alreadyBooked:prevState.alreadyBooked,
                     selectedDate: item.getDate(),
                     selectedMonth: item.getMonth(),
-                    selectedYear: item.getYear(),
+                    selectedYear: item.getFullYear(),
                     start:"45",
                     end:"56"
 
@@ -56,7 +63,8 @@ export default class SchedulePicker extends Component{
             "July", "August", "September", "October", "November", "December"
         ];
 
-        let today = new Date();
+        let today = new Date()
+
         let dateToday = today.getDate();
         let thisMonth = today.getMonth();
         let thisYear = today.getFullYear();
@@ -74,13 +82,13 @@ export default class SchedulePicker extends Component{
                     hour++;
                 }
             totalTimeSlots.push({
-                start: new Date(
+                startDateTime: new Date(
                     this.state.selectedYear,
                     this.state.selectedMonth,
                     this.state.selectedDate,
                     hour,min
                 ),
-                end: new Date(
+                endDateTime: new Date(
                     this.state.selectedYear,
                     this.state.selectedMonth,
                     this.state.selectedDate,
@@ -94,10 +102,11 @@ export default class SchedulePicker extends Component{
         if(this.state.selectedDate){
             selectedDayAlreadyBookedSlots = this.state.alreadyBooked
                 .filter(i=>{
+                    //console.log(i.startDateTime.getDate() + '   '+ this.state.selectedDate)
                     if(i.startDateTime === null || i.startDateTime === undefined)
                         return null
-                    else if((i.startDateTime.substr(8,2) == this.state.selectedDate)){
-                        console.log(i.startDateTime.substr(8,2) + '   '+ this.state.selectedDate)
+                    else if((i.startDateTime.getDate() == this.state.selectedDate)){
+                        console.log(i.startDateTime.getDate() + '   '+ this.state.selectedDate)
                         return i
                     }
                 })
@@ -105,35 +114,46 @@ export default class SchedulePicker extends Component{
 
         function isClear(i) {
             for (let j = 0; j < selectedDayAlreadyBookedSlots.length; j++) {
-                if(i.end.getHours() < selectedDayAlreadyBookedSlots[j].startDateTime.substr(11,2)
-                    || i.start.getHours() > selectedDayAlreadyBookedSlots[j].endDateTime.substr(11,2)){
+
+                console.log(i.startDateTime);
+                console.log(selectedDayAlreadyBookedSlots[j].startDateTime)
+
+                if(i.endDateTime.getHours() < selectedDayAlreadyBookedSlots[j].startDateTime.getHours()
+                    || i.startDateTime.getHours() > selectedDayAlreadyBookedSlots[j].endDateTime.getHours()){
                     return true;
                 }
-                if(i.end.getHours() == selectedDayAlreadyBookedSlots[j].startDateTime.substr(11,2)
-                    && i.end.getMinutes() == selectedDayAlreadyBookedSlots[j].startDateTime.substr(14,2)) {
+                if(i.endDateTime.getHours() == selectedDayAlreadyBookedSlots[j].startDateTime.getHours()
+                    && i.endDateTime.getMinutes() == selectedDayAlreadyBookedSlots[j].startDateTime.getMinutes()) {
                     return true;
                 }
-                if(i.start.getHours() == selectedDayAlreadyBookedSlots[j].endDateTime.substr(11,2)
-                    && i.start.getMinutes() == selectedDayAlreadyBookedSlots[j].endDateTime.substr(14,2)) {
+                if(i.startDateTime.getHours() == selectedDayAlreadyBookedSlots[j].endDateTime.getHours()
+                    && i.startDateTime.getMinutes() == selectedDayAlreadyBookedSlots[j].endDateTime.getMinutes()) {
                     return true;
                 }
+                if(i.startDateTime == selectedDayAlreadyBookedSlots[j].startDateTime
+                    && i.endDateTime == selectedDayAlreadyBookedSlots[j].endDateTime){
+
+                    return false;
+                }
+
             }
             return false;
         }
 
         let availableTimeSlots
+        console.log("TEST"+selectedDayAlreadyBookedSlots.length);
         if(selectedDayAlreadyBookedSlots.length!=0)
             availableTimeSlots = totalTimeSlots.filter(i => (isClear(i)) ? i : null)
         else availableTimeSlots = totalTimeSlots
 
         return (
             <div>
-                {selectedDayAlreadyBookedSlots
-                    .map(i=><p>{i.startDateTime} to {i.endDateTime}</p>)}
+                {/*{selectedDayAlreadyBookedSlots*/}
+                {/*    .map(i=>{ return <p>{i.startDateTime} to {i.endDateTime}</p>})}*/}
                 {
                     <div className={'col s1'}>
                         {temp.map(item =>
-                            <button className="btn row "
+                            <button className="btn row"
                                     style={{'padding':'15%','margin':'15%', 'width':'150%', 'height':'70%'}}
                                     onClick={e => (this.showAvailabilities(item,e))}>
                                 {item.getDate() +"-"+ monthNames[item.getMonth()]}
@@ -152,11 +172,13 @@ export default class SchedulePicker extends Component{
                             {availableTimeSlots.map(slot=>
                                     <div className={'col s3'}>
                                         <div className={'row '}>
-                                            <button className='slotButton btn-small '>
-                                                {slot.start.getHours() }:{ slot.start.getMinutes()+' '}
+                                            <button className='slotButton btn-small '
+                                                onClick={e=>this.bookSchedule(slot,e)}
+                                                >
+                                                {slot.startDateTime.getHours() }:{ slot.startDateTime.getMinutes()+' '}
                                                 -{' '}
-                                                { slot.end.getHours()}
-                                                : {slot.end.getMinutes()}
+                                                { slot.endDateTime.getHours()}
+                                                : {slot.endDateTime.getMinutes()}
                                             </button>
                                         </div>
 
@@ -167,5 +189,26 @@ export default class SchedulePicker extends Component{
                     : null}
             </div>
         );
+    }
+
+    bookSchedule(slot, e) {
+        console.log(slot.startDateTime.toString());
+        console.log(slot.endDateTime.toString());
+        fetch("http://localhost:8080/rest/bookings/addBooking",
+            {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(slot)
+            }).then(result => result.json())
+            .then(parsedResp => {
+                console.log(parsedResp);
+                //localStorage.setItem("isLoggedIn",parsedResp.isSuccess);
+                //localStorage.setItem("loggedUsername",parsedResp.username);
+                //this.setState({username:parsedResp.username})
+                //this.setState({isLoggedIn:parsedResp.isSuccess})
+            })
     }
 }

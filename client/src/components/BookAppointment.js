@@ -98,7 +98,4 @@ export  default class BookAppointment extends Component {
             </div>
         );
     }
-    doBooking() {
-
-    }
 }
