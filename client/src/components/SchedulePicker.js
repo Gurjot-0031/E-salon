@@ -10,8 +10,6 @@ export default class SchedulePicker extends Component{
             selectedDate:'',
             selectedMonth:'',
             selectedYear:'',
-            start: '',
-            end: ''
         }
         this.showAvailabilities = this.showAvailabilities.bind(this);
         this.bookSchedule = this.bookSchedule.bind(this);
@@ -71,7 +69,7 @@ export default class SchedulePicker extends Component{
 
         //showing 11 days in future
         for (let i = 0; i < 10; i++) {
-            temp.push(new Date(thisYear,thisMonth,dateToday+i));
+            temp = [...temp ,new Date(thisYear,thisMonth,dateToday+i)];
         }
 
         let totalTimeSlots = []
@@ -81,75 +79,66 @@ export default class SchedulePicker extends Component{
                     min = 0;
                     hour++;
                 }
-            totalTimeSlots.push({
-                startDateTime: new Date(
-                    this.state.selectedYear,
-                    this.state.selectedMonth,
-                    this.state.selectedDate,
-                    hour,min
-                ),
-                endDateTime: new Date(
-                    this.state.selectedYear,
-                    this.state.selectedMonth,
-                    this.state.selectedDate,
-                    parseInt((hour*60 + min + this.state.totalServiceTime)/60),         //hours
-                    (hour*60 + min + this.state.totalServiceTime)%60                       //minutes
-                )
-            })
+            if((hour*60 + min + this.state.totalServiceTime)/60 <= 18){
+                totalTimeSlots = [...totalTimeSlots , {
+                    startDateTime: new Date(
+                        this.state.selectedYear,
+                        this.state.selectedMonth,
+                        this.state.selectedDate,
+                        hour,min
+                    ),
+                    endDateTime: new Date(
+                        this.state.selectedYear,
+                        this.state.selectedMonth,
+                        this.state.selectedDate,
+                        parseInt((hour*60 + min + this.state.totalServiceTime)/60),         //hours
+                        (hour*60 + min + this.state.totalServiceTime)%60                       //minutes
+                    )
+                }]
+            }
+
         }
 
+        console.log("Already Booked\n"+ this.state.alreadyBooked.map(i => i.startDateTime+"\n"))
         let selectedDayAlreadyBookedSlots =[]
         if(this.state.selectedDate){
             selectedDayAlreadyBookedSlots = this.state.alreadyBooked
                 .filter(i=>{
-                    //console.log(i.startDateTime.getDate() + '   '+ this.state.selectedDate)
+                    console.log(i.startDateTime.getDate() + '   '+ this.state.selectedDate)
                     if(i.startDateTime === null || i.startDateTime === undefined)
                         return null
                     else if((i.startDateTime.getDate() == this.state.selectedDate)){
                         console.log(i.startDateTime.getDate() + '   '+ this.state.selectedDate)
                         return i
                     }
+                    //return ;
                 })
         }
 
         function isClear(i) {
             for (let j = 0; j < selectedDayAlreadyBookedSlots.length; j++) {
-
-                console.log(i.startDateTime);
-                console.log(selectedDayAlreadyBookedSlots[j].startDateTime)
-
-                if(i.endDateTime.getHours() < selectedDayAlreadyBookedSlots[j].startDateTime.getHours()
-                    || i.startDateTime.getHours() > selectedDayAlreadyBookedSlots[j].endDateTime.getHours()){
-                    return true;
-                }
-                if(i.endDateTime.getHours() == selectedDayAlreadyBookedSlots[j].startDateTime.getHours()
-                    && i.endDateTime.getMinutes() == selectedDayAlreadyBookedSlots[j].startDateTime.getMinutes()) {
-                    return true;
-                }
-                if(i.startDateTime.getHours() == selectedDayAlreadyBookedSlots[j].endDateTime.getHours()
-                    && i.startDateTime.getMinutes() == selectedDayAlreadyBookedSlots[j].endDateTime.getMinutes()) {
-                    return true;
-                }
-                if(i.startDateTime == selectedDayAlreadyBookedSlots[j].startDateTime
-                    && i.endDateTime == selectedDayAlreadyBookedSlots[j].endDateTime){
-
+                // console.log(i.startDateTime);
+                // console.log(selectedDayAlreadyBookedSlots[j].startDateTime)
+                if(i.endDateTime.getTime() <= selectedDayAlreadyBookedSlots[j].endDateTime.getTime()
+                    && i.endDateTime.getTime() > selectedDayAlreadyBookedSlots[j].startDateTime.getTime()){
                     return false;
                 }
-
+                if(i.startDateTime.getTime() >= selectedDayAlreadyBookedSlots[j].startDateTime.getTime()
+                    && i.startDateTime.getTime() < selectedDayAlreadyBookedSlots[j].endDateTime.getTime()) {
+                    return false;
+                }
             }
-            return false;
+            return true;
         }
 
         let availableTimeSlots
         console.log("TEST"+selectedDayAlreadyBookedSlots.length);
         if(selectedDayAlreadyBookedSlots.length!=0)
-            availableTimeSlots = totalTimeSlots.filter(i => (isClear(i)) ? i : null)
+            availableTimeSlots = totalTimeSlots.filter(i => (isClear(i)) ? i : console.log("Kicked out:"+i.startDateTime+" to "+i.endDateTime))
         else availableTimeSlots = totalTimeSlots
 
         return (
             <div>
-                {/*{selectedDayAlreadyBookedSlots*/}
-                {/*    .map(i=>{ return <p>{i.startDateTime} to {i.endDateTime}</p>})}*/}
                 {
                     <div className={'col s1'}>
                         {temp.map(item =>
@@ -205,10 +194,6 @@ export default class SchedulePicker extends Component{
             }).then(result => result.json())
             .then(parsedResp => {
                 console.log(parsedResp);
-                //localStorage.setItem("isLoggedIn",parsedResp.isSuccess);
-                //localStorage.setItem("loggedUsername",parsedResp.username);
-                //this.setState({username:parsedResp.username})
-                //this.setState({isLoggedIn:parsedResp.isSuccess})
             })
     }
 }
