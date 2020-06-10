@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Component} from 'react';
+import BookingConfirmation from './BookingConfirmation';
 
 export default class SchedulePicker extends Component{
     constructor(props) {
@@ -10,6 +11,8 @@ export default class SchedulePicker extends Component{
             selectedDate:'',
             selectedMonth:'',
             selectedYear:'',
+            isBooked:false,
+            bookedSlot:'',
         }
         this.showAvailabilities = this.showAvailabilities.bind(this);
         this.bookSchedule = this.bookSchedule.bind(this);
@@ -150,7 +153,7 @@ export default class SchedulePicker extends Component{
                         )}
                     </div>
                 }
-                {(this.state.selectedDate)
+                {(this.state.selectedDate && !this.state.isBooked)
                     ? <div>
                         <div className='col s8 offset-s2'>
                             <div className={'row'} style={{'padding':'5% 5% 5% 5%'}}>
@@ -175,7 +178,8 @@ export default class SchedulePicker extends Component{
                             }
                         </div>
                     </div>
-                    : null}
+                    : (this.state.isBooked) ? <BookingConfirmation bookedSlot={this.state.bookedSlot}/>
+                                            : null }
             </div>
         );
     }
@@ -193,7 +197,14 @@ export default class SchedulePicker extends Component{
                 body: JSON.stringify(slot)
             }).then(result => result.json())
             .then(parsedResp => {
-                console.log(parsedResp);
+                console.log("Booking response from API"+parsedResp);
+                this.setState(prevState => (
+                    {
+                        ...prevState,
+                        isBooked : !prevState.isBooked,
+                        bookedSlot: slot
+                    }
+                ))
             })
     }
 }
