@@ -143,15 +143,19 @@ export default class SchedulePicker extends Component{
         return (
             <div>
                 {
-                    <div className={'col s1'}>
-                        {temp.map(item =>
-                            <button className="btn row"
-                                    style={{'padding':'15%','margin':'15%', 'width':'150%', 'height':'70%'}}
-                                    onClick={e => (this.showAvailabilities(item,e))}>
-                                {item.getDate() +"-"+ monthNames[item.getMonth()]}
-                            </button>
-                        )}
-                    </div>
+                    (!this.state.isBooked)
+                        ?
+                        <div className={'col s1'}>
+                            {temp.map(item =>
+                                <button className="btn row"
+                                        style={{'padding':'15%','margin':'15%', 'width':'150%', 'height':'70%'}}
+                                        onClick={e => (this.showAvailabilities(item,e))}>
+                                    {item.getDate() +"-"+ monthNames[item.getMonth()]}
+                                </button>
+                            )}
+                        </div>
+                        :
+                        null
                 }
                 {(this.state.selectedDate && !this.state.isBooked)
                     ? <div>
@@ -197,14 +201,16 @@ export default class SchedulePicker extends Component{
                 body: JSON.stringify(slot)
             }).then(result => result.json())
             .then(parsedResp => {
-                console.log("Booking response from API"+parsedResp);
-                this.setState(prevState => (
-                    {
-                        ...prevState,
-                        isBooked : !prevState.isBooked,
-                        bookedSlot: slot
-                    }
-                ))
+                console.log("Booking response from API "+parsedResp);
+                if(parsedResp === true){
+                    this.setState(prevState => (
+                        {
+                            ...prevState,
+                            isBooked : !prevState.isBooked,
+                            bookedSlot: slot
+                        }
+                    ))
+                }
             })
     }
 }

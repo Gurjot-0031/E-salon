@@ -13,8 +13,10 @@ export  default class BookAppointment extends Component {
             totalTime: this.props.location.state.selectedProducts
                 .map(item=>item.estimatedTime)
                 .reduce((item1Time,item2Time)=>item1Time+item2Time,0),
-            items:this.props.location.state.selectedProducts
+            items:this.props.location.state.selectedProducts,
+            redirectToSchedulePicker : false
         }
+        this.goToSchedulePicker = this.goToSchedulePicker.bind(this);
     }
      componentDidMount() {
     }
@@ -83,19 +85,44 @@ export  default class BookAppointment extends Component {
                             <div className={"col s2"}>{this.state.totalTime} minutes</div>
                         </div>
                         <div className={"row schedulePicker"}>
-                            <div className={"col s12"}>
-                                {/*{this.state.alreadyBooked.map(i=><p>{i.startDateTime}</p>)}*/}
-                                <SchedulePicker
-                                    passedState = {this.state}
-                                />
-                            </div>
+                            <button onClick={() => this.goToSchedulePicker()}>
+                                NEXT
+                            </button>
+                            {/*<div className={"col s12"}>*/}
+                            {/*    /!*{this.state.alreadyBooked.map(i=><p>{i.startDateTime}</p>)}*!/*/}
+                            {/*    <SchedulePicker*/}
+                            {/*        passedState = {this.state}*/}
+                            {/*    />*/}
+                            {/*</div>*/}
                         </div>
 
                     </div>
                     :null
                 }
+                {
+                    (this.state.items.length!=0 && this.state.redirectToSchedulePicker)
+                    ?
+                       <div className={'row schedulePicker'}>
+                           <div className={"col s12"}>
+                               {/*{this.state.alreadyBooked.map(i=><p>{i.startDateTime}</p>)}*/}
+                               <SchedulePicker
+                                   passedState = {this.state}
+                               />
+                           </div>
+                       </div>
+
+                        :null
+
+
+                }
 
             </div>
         );
+    }
+
+    goToSchedulePicker() {
+        this.setState(prevState=>({   ...prevState,
+             redirectToSchedulePicker: !prevState.redirectToSchedulePicker
+         }))
     }
 }

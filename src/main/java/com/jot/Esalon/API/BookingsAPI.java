@@ -30,11 +30,17 @@ public class BookingsAPI {
 
     //@CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "/addBooking")
-    public Booking addProductToDB(@RequestBody final Booking booking){
+    public boolean addProductToDB(@RequestBody final Booking booking){
         System.out.println(booking.getStartDateTime());
         System.out.println(booking.getEndDateTime());
-        repository.save(booking);
-        return booking;
+        try{
+            repository.save(booking);
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     //@CrossOrigin(origins = "http://localhost:3000")

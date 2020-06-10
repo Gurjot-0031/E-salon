@@ -3,15 +3,18 @@ import React from 'react';
 function BookingConfirmation(props) {
     return (
         <div>
-            <div><h3> Your appointment has been booked </h3>
-                <h4>
+            <div><h3> Your appointment has been booked <br/></h3>
+                <h4>Appointment details:-</h4>
+
+                <h5>
                     <br/>
-                    {props.bookedSlot.startDateTime.toDateString()}
-                    <br/>
-                    Starts- {props.bookedSlot.startDateTime.toLocaleTimeString()}
-                    <br/>
-                    Ends- {props.bookedSlot.endDateTime.toLocaleTimeString()}
-                </h4>
+                    {
+                        props.bookedSlot.startDateTime.toDateString() +"  "+
+                        props.bookedSlot.startDateTime.toLocaleTimeString()+"  "
+                    }
+                        to
+                        {"  "+props.bookedSlot.endDateTime.toLocaleTimeString()}
+                </h5>
             </div>
         </div>
     );
