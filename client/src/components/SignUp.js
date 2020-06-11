@@ -13,6 +13,13 @@ export default class SignUp extends Component{
     }
 
     register() {
+        if(this.state.name === undefined || this.state.username === undefined || this.state.password === undefined || this.state.cnfpassword === undefined)
+            {
+                this.setState(prevState =>({
+                    ...prevState, signUpErrors: [...prevState.signUpErrors,"All fields are required"]
+                }));
+                return;
+            }
         if(this.state.password === this.state.cnfpassword) {
             fetch('http://localhost:8080/rest/users/addUser',
                 {
@@ -24,14 +31,21 @@ export default class SignUp extends Component{
                     body: JSON.stringify(this.state)
                 }).then(result => result.json())
                 .then(parsedResp => {
+                    if(parsedResp.username == null)
+                        this.setState(prevState =>({
+                            ...prevState, signUpErrors: [...prevState.signUpErrors,"Username already exists, try a different one"]
+                        }))
                     localStorage.setItem("isLoggedIn",parsedResp.isSuccess);
                     localStorage.setItem("loggedUsername",parsedResp.username);
                     this.setState({username:parsedResp.username})
                     this.setState({isLoggedIn:parsedResp.isSuccess})
+
                 })
         }
         else{
-            this.state.signUpErrors.push("Passwords do not match");
+            this.setState(prevState =>({
+                ...prevState, signUpErrors: [...prevState.signUpErrors,"Passwords do not match"]
+            }))
         }
     }
 
@@ -50,7 +64,7 @@ export default class SignUp extends Component{
             return <Redirect to = "/home" />
         let st = {
             //backgroundImage: url("/pics/loginBack.jpg"),
-            backgroundColor: "#b2c4bd"
+            backgroundColor: "#d9efe6"
         }
         var auth=JSON.parse(localStorage.getItem("auth"));
         return (
@@ -61,7 +75,7 @@ export default class SignUp extends Component{
                 {/*{*/}
                 {/*    auth ? <Redirect to="home"></Redirect>:null*/}
                 {/*}*/}
-                <div className="table-of-contents " >
+                <div className="table" >
                     <div className="row">
                         <div className="col s4 offset-s4">
                             {/*<h4>E-Salon</h4>*/}
@@ -101,11 +115,11 @@ export default class SignUp extends Component{
                                        }} required>
                                 </input>
                             </label>
-                            <label>
-                                {this.state.signUpErrors.forEach(error=>error)}
-                            </label>
+                            {this.state.signUpErrors.map(error=> <label>
+                                        {error}<br/></label>)}
+
                             <input type={"button"} className={"input-field col s12 btn"}
-                                onClick={this.register.bind(this)}
+                                onClick={this.register}
                                 value={"REGISTER"}
                             />
                             <label>Already a user?

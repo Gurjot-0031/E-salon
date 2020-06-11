@@ -36,9 +36,10 @@ export  default class BookAppointment extends Component {
             <div>
                 <AppHeader/>
                <div className="container">
-                    <h5 className="left-align">Your selected services..</h5>
-                   {(this.state.items.length !== 0)
+
+                   {(this.state.items.length !== 0 && !this.state.redirectToSchedulePicker)
                        ?<div>
+                           <h5 className="left-align">Your selected services..</h5>
                            <div className={"row"}>
                             <div className={"col s3"}>Service</div>
                             <div className={"col s3"}>Price</div>
@@ -97,7 +98,7 @@ export  default class BookAppointment extends Component {
 
                            </div>
                        </div>
-                       :<div>Your booking cart is empty</div>
+                       :(this.state.items.length === 0)? <div>Your booking cart is empty</div> : null
                    }
 
                 </div>

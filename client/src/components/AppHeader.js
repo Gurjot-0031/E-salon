@@ -52,12 +52,12 @@ class AppHeader extends Component{
                         <div className="brand-logo" ><Link to="home">E-Salon</Link> </div>
                         <ul id="nav-mobile">
                             {
-                                localStorage.getItem("isLoggedIn")?
+                                (localStorage.getItem("isLoggedIn") && localStorage.getItem("loggedUsername")) ?
                                     <li className="left"><i>Good {timeOfDay} {localStorage.getItem("loggedUsername")}</i></li>
                                     : null
 
                             }
-                            <li className="right "><a href="facebook.com"><i className="material-icons">account_circle</i></a></li>
+                            <li className="right "><a href="/home"><i className="material-icons">account_circle</i></a></li>
                             <li className="right "><a href="instagram.com"><i className="material-icons">shopping_cart</i></a></li>
                             {
                                 !localStorage.getItem("isLoggedIn")

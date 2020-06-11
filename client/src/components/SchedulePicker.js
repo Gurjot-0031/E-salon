@@ -145,14 +145,17 @@ export default class SchedulePicker extends Component{
                 {
                     (!this.state.isBooked)
                         ?
-                        <div className={'col s1'}>
-                            {temp.map(item =>
-                                <button className="btn row"
-                                        style={{'padding':'15%','margin':'15%', 'width':'150%', 'height':'70%'}}
-                                        onClick={e => (this.showAvailabilities(item,e))}>
-                                    {item.getDate() +"-"+ monthNames[item.getMonth()]}
-                                </button>
-                            )}
+                        <div>
+                            <h3 className="header">Pick a slot</h3>
+                            <div className={'col s1'}>
+                                {temp.map(item =>
+                                    <button className="btn row"
+                                            style={{'padding':'15%','margin':'15%', 'width':'150%', 'height':'70%'}}
+                                            onClick={e => (this.showAvailabilities(item,e))}>
+                                        {item.getDate() +"-"+ monthNames[item.getMonth()]}
+                                    </button>
+                                )}
+                            </div>
                         </div>
                         :
                         null

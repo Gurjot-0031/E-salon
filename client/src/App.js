@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import AppHeader from "./components/AppHeader";
 import AppFooter from "./components/AppFooter";
 import Protected from "./components/Protected";
+import MyAccount from "./components/MyAccount";
 import BookAppointment from "./components/BookAppointment";
 import {BrowserRouter , Switch, Link, Route, Redirect} from 'react-router-dom';
 
@@ -44,6 +45,10 @@ class App extends Component{
 
                         <Route path="/" strict exact>
                             <AppHeader/>
+                        </Route>
+
+                        <Route path="/myAccount" strict exact>
+                            <MyAccount/>
                         </Route>
 
 
