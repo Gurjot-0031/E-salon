@@ -63,7 +63,7 @@ class AppHeader extends Component{
                                 !localStorage.getItem("isLoggedIn")
                                     // ? <li className="right "><Link to="/logout"><i className="material-icons">power_settings_new</i></Link></li>
                                     // : <li className="right "><Link to="/"><i className="material-icons">power_settings_new</i></Link></li>
-                                    ? <li className="right "><Link to="/login"><i className="material-icons">LOGIN</i></Link></li>
+                                    ? <li className="right "><Link to="/myAccount"><i className="material-icons">LOGIN</i></Link></li>
                                     : <li className="right "><Link><i className="material-icons" onClick={this.doLogout.bind(this)}>LOGOUT</i></Link></li>
                             }
                             {
