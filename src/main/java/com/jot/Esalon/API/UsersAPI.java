@@ -28,6 +28,12 @@ public class UsersAPI {
         return repository.findAll();
     }
 
+    @PostMapping(value = "/getUserDetails")
+    public Users getUserByUserName(@RequestBody String unameFromFrontEnd){
+        System.out.println("Mycppunrt uname "+unameFromFrontEnd);
+        return repository.findByUsername(unameFromFrontEnd);
+    }
+
     //@CrossOrigin(origins = "*")
     @PostMapping(value = "/addUser")
     public AuthenticationResponse addUserToDB(@RequestBody final Users users){
