@@ -1,8 +1,6 @@
 package com.jot.Esalon.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -12,6 +10,10 @@ public class Booking {
     private int bookingId;
     private Date startDateTime;
     private Date endDateTime;
+
+    @ManyToOne
+    @JoinColumn(name="uidInBooking",referencedColumnName = "uid")
+    private Users users;
 
     public Booking() {
     }
