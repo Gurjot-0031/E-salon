@@ -29,9 +29,9 @@ public class UsersAPI {
     }
 
     @PostMapping(value = "/getUserDetails")
-    public Users getUserByUserName(@RequestBody String unameFromFrontEnd){
-        System.out.println("Mycppunrt uname "+unameFromFrontEnd);
-        return repository.findByUsername(unameFromFrontEnd);
+    public Users getUserByUserName(@RequestBody Users user){
+        System.out.println("Mycppunrt uname "+ user.getUsername());
+        return repository.findByUsername(user.getUsername());
     }
 
     //@CrossOrigin(origins = "*")
@@ -70,14 +70,12 @@ public class UsersAPI {
                     System.out.println("REs"+users.getPassword());
                     response.username = users.getUsername();
                     response.isSuccess = true;
-                    httpResponse.setStatus(200);
                     return response;
                 }
             }
         }
         response.isSuccess = false;
         response.username = null;
-        httpResponse.setStatus(200);
         return response;
     }
 }

@@ -33,6 +33,7 @@ public class BookingsAPI {
     public boolean addProductToDB(@RequestBody final Booking booking){
         System.out.println(booking.getStartDateTime());
         System.out.println(booking.getEndDateTime());
+        System.out.println(booking.getUidInBooking());
         try{
             repository.save(booking);
             return true;
