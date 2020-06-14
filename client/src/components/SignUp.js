@@ -13,11 +13,14 @@ export default class SignUp extends Component{
     }
 
     register() {
-        if(this.state.name === undefined || this.state.username === undefined || this.state.password === undefined || this.state.cnfpassword === undefined)
+        if(this.state.name === undefined || this.state.username === undefined || this.state.password === undefined || this.state.cnfpassword === undefined
+            || this.state.name === null || this.state.username === null || this.state.password === null || this.state.cnfpassword === null)
             {
-                this.setState(prevState =>({
-                    ...prevState, signUpErrors: [...prevState.signUpErrors,"All fields are required"]
-                }));
+                if(this.state.signUpErrors.find(item => item === "All fields are required") === undefined){
+                    this.setState(prevState =>({
+                        ...prevState, signUpErrors: [...prevState.signUpErrors,"All fields are required"]
+                    }));
+                }
                 return;
             }
         if(this.state.password === this.state.cnfpassword) {
@@ -43,9 +46,12 @@ export default class SignUp extends Component{
                 })
         }
         else{
-            this.setState(prevState =>({
-                ...prevState, signUpErrors: [...prevState.signUpErrors,"Passwords do not match"]
-            }))
+            if(this.state.signUpErrors.find(item => item === "Passwords do not match") === undefined){
+                this.setState(prevState =>({
+                    ...prevState, signUpErrors: [...prevState.signUpErrors,"Passwords do not match"]
+                }))
+            }
+
         }
     }
 
@@ -115,10 +121,10 @@ export default class SignUp extends Component{
                                        }} required>
                                 </input>
                             </label>
-                            {this.state.signUpErrors.map(error=> <label>
-                                        {error}<br/></label>)}
+                            {this.state.signUpErrors.map(error=> <p style={{'color':'red'}}>
+                                        {error}<br/></p>)}
 
-                            <input type={"button"} className={"input-field col s12 btn"}
+                            <input type={"submit"} className={"input-field col s12 btn"}
                                 onClick={this.register}
                                 value={"REGISTER"}
                             />

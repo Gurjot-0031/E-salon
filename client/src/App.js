@@ -34,9 +34,10 @@ class App extends Component{
                         {/*<Route path={"/about"}>*/}
                         {/*    <About />*/}
                         {/*</Route>*/}
-                        <Route path="/home" strict exact component={Products}/>
+                        <Route path="/home" strict exact>
                             {/*//to be fixed*/}
-                            {/*<Protected cmp={Products}/>*/}
+                            <Protected cmp={Products}/>
+                        </Route>
 
                         <Route path="/login" strict exact>
                             <Login/>

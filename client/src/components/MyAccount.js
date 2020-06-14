@@ -9,21 +9,7 @@ class MyAccount extends Component {
     }
 
     componentDidMount(){
-        fetch("http://localhost:8080/rest/users/getUserDetails",{
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept':  '*/*',
-            },
-            body: localStorage.getItem("loggedUsername")
-        })
-            .then(response=> response.json())
-            .then(result => {
-                this.setState({
-                    name: result.name,
-                    username: result.username
-                })
-            })
+
     }
 
 

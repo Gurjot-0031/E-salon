@@ -10,7 +10,7 @@ class AppHeader extends Component{
     }
 
     doLogout() {
-        localStorage.clear()
+        localStorage.clear();
         this.setState({
             isLoggedIn : false
         });
@@ -21,10 +21,7 @@ class AppHeader extends Component{
 
     }
 
-
     render(){
-
-
         const date = new Date()
         const hours = date.getHours()
         let timeOfDay
@@ -52,7 +49,7 @@ class AppHeader extends Component{
                         <div className="brand-logo" ><Link to="home">E-Salon</Link> </div>
                         <ul id="nav-mobile">
                             {
-                                (localStorage.getItem("isLoggedIn") && localStorage.getItem("loggedUsername")) ?
+                                (this.state.isLoggedIn == true && localStorage.getItem("loggedUsername")!=null) ?
                                     <li className="left"><i>Good {timeOfDay} {localStorage.getItem("loggedUsername")}</i></li>
                                     : null
 
@@ -60,7 +57,7 @@ class AppHeader extends Component{
                             <li className="right "><a href="/myAccount"><i className="material-icons">account_circle</i></a></li>
                             <li className="right "><a href="instagram.com"><i className="material-icons">shopping_cart</i></a></li>
                             {
-                                !localStorage.getItem("isLoggedIn")
+                                (!this.state.isLoggedIn)
                                     // ? <li className="right "><Link to="/logout"><i className="material-icons">power_settings_new</i></Link></li>
                                     // : <li className="right "><Link to="/"><i className="material-icons">power_settings_new</i></Link></li>
                                     ? <li className="right "><Link to="/login"><i className="material-icons">LOGIN</i></Link></li>

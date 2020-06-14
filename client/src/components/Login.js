@@ -11,7 +11,8 @@ export default class Login extends Component{
             loggedUsername: "",
             username:undefined,
             password:undefined,
-            isRegistering:false
+            isRegistering:false,
+            loginErrors : []
         };
         this.login = this.login.bind(this);
         //this.render = this.render.bind(this);
@@ -19,39 +20,58 @@ export default class Login extends Component{
 
 
      async login() {
-        console.log("Logging in");
-        if(this.state.username !== undefined && this.state.password !== undefined)
-        await fetch("http://localhost:8080/rest/users/authenticate",{
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept':  '*/*',
-            },
-            body: JSON.stringify(this.state) // body data type must match "Content-Type" header
-        })
-            .then(response=> response.json())
-            .then(parsedData => {
-                console.log('parsed data==> ' +parsedData.username+" "+parsedData.isSuccess); // JSON data parsed by `response.json()` call
-                return parsedData;
+         console.log("Logging in");
+         if (this.state.username !== undefined && this.state.password !== undefined) {
+            await fetch("http://localhost:8080/rest/users/authenticate", {
+                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                 headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*',
+                },
+                body: JSON.stringify(this.state) // body data type must match "Content-Type" header
             })
-             //.then(data=>this.setState({loggedUsername:data.username,isLoggedIn:true}))
-             .then(data=>{
-                 localStorage.setItem("isLoggedIn",data.isSuccess);
-                 localStorage.setItem("loggedUsername",data.username);
-                 //console.log(this.state)
-                 this.setState({loggedUsername:data.username});
-                 this.setState({isLoggedIn:data.isSuccess});
+                .then(response => response.json())
+                .then(parsedData => {
+                    console.log('parsed data==> ' + parsedData.username + " " + parsedData.isSuccess); // JSON data parsed by `response.json()` call
+                    return parsedData;
+                })
+                //.then(data=>this.setState({loggedUsername:data.username,isLoggedIn:true}))
+                .then(data => {
+                    localStorage.setItem("isLoggedIn", data.isSuccess);
+                    localStorage.setItem("loggedUsername", data.username);
+                    //console.log(this.state)
+                    this.setState({loggedUsername: data.username});
+                    this.setState({isLoggedIn: data.isSuccess});
+                })
+                .catch(error => console.log("ERROR WHILE LOGGING IN " + error));
+     }
 
-
-             })
-            .catch(error=>console.log("ERROR WHILE LOGGING IN "+error));
+        if(this.state.isLoggedIn) {
+            fetch("http://localhost:8080/rest/users/getUserDetails", {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*',
+                },
+                body: JSON.stringify({username : localStorage.getItem("loggedUsername")})
+            })
+                .then(response => response.json())
+                .then(result => {
+                    console.log("setting UID: "+result.uid);
+                    localStorage.setItem("loggedUserId", result.uid)
+                })
+        } else{
+            this.setState(prevState => ({
+                ...prevState,
+                loginErrors: ["Authentication Failed"]
+            }))
+        }
     }
     componentDidMount() {
-        this.login();
+        // this.login();
     }
 
     componentWillUnmount() {
-        this.state=null;
     }
 
 
@@ -60,7 +80,7 @@ export default class Login extends Component{
             return <Redirect to={"/home"}/>
         let st = {
             //backgroundImage: url("/pics/loginBack.jpg"),
-            backgroundColor: "#b2c4bd"
+            backgroundColor: "#d9efe6"
         }
         //var auth=JSON.parse(localStorage.getItem("auth"));
         if(!this.state.isRegistering)
@@ -86,6 +106,11 @@ export default class Login extends Component{
                                            onChange={this.handlePasswordChange.bind(this)} required>
                                     </input>
                                 </label>
+
+                                <p style={{'color':'red'}}>
+                                        {this.state.loginErrors.map(error => error)}
+                                </p>
+
                                 <input type="button" className="input-field col s12 btn"
                                        onClick={this.login.bind(this)}
                                        value={"LOGIN"}

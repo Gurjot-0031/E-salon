@@ -194,6 +194,7 @@ export default class SchedulePicker extends Component{
     bookSchedule(slot, e) {
         console.log(slot.startDateTime.toString());
         console.log(slot.endDateTime.toString());
+        console.log(localStorage.getItem("loggedUserId"));
         fetch("http://localhost:8080/rest/bookings/addBooking",
             {
                 method: "POST",
@@ -201,7 +202,7 @@ export default class SchedulePicker extends Component{
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(slot)
+                body: JSON.stringify({startDateTime: slot.startDateTime, endDateTime: slot.endDateTime ,uidInBooking: localStorage.getItem("loggedUserId")})
             }).then(result => result.json())
             .then(parsedResp => {
                 console.log("Booking response from API "+parsedResp);
