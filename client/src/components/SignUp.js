@@ -14,14 +14,16 @@ export default class SignUp extends Component{
 
     register() {
         if(this.state.name === undefined || this.state.username === undefined || this.state.password === undefined || this.state.cnfpassword === undefined
-            || this.state.name === null || this.state.username === null || this.state.password === null || this.state.cnfpassword === null)
+            || this.state.name === null || this.state.username === null || this.state.password === null || this.state.cnfpassword === null
+            || this.state.email === null || this.state.email === undefined
+                || this.state.phone === null || this.state.phone === undefined)
             {
                 if(this.state.signUpErrors.find(item => item === "All fields are required") === undefined){
                     this.setState(prevState =>({
                         ...prevState, signUpErrors: [...prevState.signUpErrors,"All fields are required"]
                     }));
                 }
-                return;
+                return ;
             }
         if(this.state.password === this.state.cnfpassword) {
             fetch('http://localhost:8080/rest/users/addUser',
@@ -36,10 +38,12 @@ export default class SignUp extends Component{
                 .then(parsedResp => {
                     if(parsedResp.username == null)
                         this.setState(prevState =>({
-                            ...prevState, signUpErrors: [...prevState.signUpErrors,"Username already exists, try a different one"]
+                            ...prevState, signUpErrors: ["Username already exists, try a different one"]
                         }))
                     localStorage.setItem("isLoggedIn",parsedResp.isSuccess);
+                    localStorage.setItem("loggedUserId",parsedResp.uid);
                     localStorage.setItem("loggedUsername",parsedResp.username);
+                    this.setState({uid:parsedResp.uid})
                     this.setState({username:parsedResp.username})
                     this.setState({isLoggedIn:parsedResp.isSuccess})
 
@@ -97,6 +101,22 @@ export default class SignUp extends Component{
                                 <input type={"text"}
                                        name={"username"}
                                        value={this.state.username}
+                                       onChange={(event)=>
+                                       {this.handleChange(event)}} required>
+                                </input>
+                            </label>
+                            <label>Email
+                                <input type={"text"}
+                                       name={"email"}
+                                       value={this.state.email}
+                                       onChange={(event)=>
+                                       {this.handleChange(event)}} required>
+                                </input>
+                            </label>
+                            <label>Phone
+                                <input type={"text"}
+                                       name={"phone"}
+                                       value={this.state.phone}
                                        onChange={(event)=>
                                        {this.handleChange(event)}} required>
                                 </input>

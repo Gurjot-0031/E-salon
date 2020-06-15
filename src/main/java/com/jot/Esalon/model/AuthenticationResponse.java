@@ -11,6 +11,7 @@ public class AuthenticationResponse {
 //        return jwt;
 //    }
 
+    public int uid;
     public String username;
     //private String role;
     public boolean isSuccess;

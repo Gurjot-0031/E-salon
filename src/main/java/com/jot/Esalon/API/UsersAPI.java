@@ -36,13 +36,14 @@ public class UsersAPI {
 
     //@CrossOrigin(origins = "*")
     @PostMapping(value = "/addUser")
-    public AuthenticationResponse addUserToDB(@RequestBody final Users users){
+    public AuthenticationResponse addUserToDB(@RequestBody final Users user){
         AuthenticationResponse response = new AuthenticationResponse();
         try{
-            repository.save(users);
+            repository.save(user);
         }
         catch (Exception e){
             System.out.println(e);
+            response.uid = -1;
             response.username=null;
             response.isSuccess=false;
             return response;
@@ -50,8 +51,10 @@ public class UsersAPI {
         //If user is added to the DB without any exception,
         //automatically login that user and return default loggedin response
         //Else, (see the catch part)
+        Users userFromDB = repository.findByUsername(user.getUsername());
+        response.uid = userFromDB.getUid();
+        response.username=userFromDB.getUsername();
         response.isSuccess=true;
-        response.username=users.getUsername();
         return response;
         //return repository.findAll();
 
@@ -68,12 +71,14 @@ public class UsersAPI {
                 if(users.getPassword().equals(request.getPassword())){
                     System.out.println("REs"+users.getUsername());
                     System.out.println("REs"+users.getPassword());
+                    response.uid = users.getUid();
                     response.username = users.getUsername();
                     response.isSuccess = true;
                     return response;
                 }
             }
         }
+        response.uid = -1;
         response.isSuccess = false;
         response.username = null;
         return response;

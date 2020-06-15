@@ -39,28 +39,16 @@ export default class Login extends Component{
                 .then(data => {
                     localStorage.setItem("isLoggedIn", data.isSuccess);
                     localStorage.setItem("loggedUsername", data.username);
+                    localStorage.setItem("loggedUserId",data.uid);
                     //console.log(this.state)
+                    this.setState({loggedUserId: data.uid});
                     this.setState({loggedUsername: data.username});
                     this.setState({isLoggedIn: data.isSuccess});
                 })
                 .catch(error => console.log("ERROR WHILE LOGGING IN " + error));
      }
 
-        if(this.state.isLoggedIn) {
-            fetch("http://localhost:8080/rest/users/getUserDetails", {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': '*/*',
-                },
-                body: JSON.stringify({username : localStorage.getItem("loggedUsername")})
-            })
-                .then(response => response.json())
-                .then(result => {
-                    console.log("setting UID: "+result.uid);
-                    localStorage.setItem("loggedUserId", result.uid)
-                })
-        } else{
+        if(!this.state.isLoggedIn) {
             this.setState(prevState => ({
                 ...prevState,
                 loginErrors: ["Authentication Failed"]

@@ -4,7 +4,6 @@ import com.jot.Esalon.Repository.BookingsRepository;
 import com.jot.Esalon.model.Booking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -21,10 +20,8 @@ public class BookingsAPI {
     //@CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(value = "/all")
     private List<Booking> getAll(HttpServletRequest request, HttpServletResponse response){
-        response.setStatus(200);
         System.out.println(request.toString());
         System.out.println(response.toString());
-
         return repository.findAll();
     }
 
