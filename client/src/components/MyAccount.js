@@ -20,8 +20,8 @@ class MyAccount extends Component {
             .then(result => {
                 //console.log("setting UID: "+result.uid);
                 this.setState({
-                    username: result.username,
                     uid: result.uid,
+                    username: result.username,
                     name: result.name,
                     email: result.email,
                     phone: result.phone
@@ -32,13 +32,18 @@ class MyAccount extends Component {
         return (
             <div>
                 <AppHeader/>
-                <div className='table'>
-                    <div>Name: {this.state.uid}</div>
-                    <div>Username: {this.state.username}</div>
-                    <div>Name: {this.state.name}</div>
-                    <div>Username: {this.state.email}</div>
-                    <div>Username: {this.state.phone}</div>
-                </div>
+                <table className='col s12'>
+                    <thead><div align='center'><th>My Account</th></div></thead>
+                    {
+                        Object.keys(this.state).map(i =>
+                            <tr key={i}>
+                                <td>{[i]}</td>
+                                <td>{this.state[i]}</td>
+                                <td><a ><i className='material-icons'>edit</i></a></td>
+                            </tr>
+                        )
+                    }
+                </table>
 
             </div>
         );
