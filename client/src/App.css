@@ -60,3 +60,9 @@ body{
   margin:5%;
   padding: 0px 5px 5px 5px;
 }
+
+.MyAccountTable{
+  width: 50%;
+  margin-left: 25%;
+  margin-right: 25%;
+}
