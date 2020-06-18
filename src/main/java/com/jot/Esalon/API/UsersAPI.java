@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -58,6 +59,23 @@ public class UsersAPI {
         return response;
         //return repository.findAll();
 
+    }
+
+    @PostMapping(value = "/updateUser")
+    public boolean updateUser(@RequestBody final Users user){
+        Users tempUser;
+        try{
+            tempUser = repository.findByUsername(user.getUsername());
+            tempUser.setName(user.getName());
+            tempUser.setEmail(user.getEmail());
+            tempUser.setPhone(user.getPhone());
+            repository.save(tempUser);
+            return true;
+        }
+        catch (Exception e){
+            System.out.println("Error: User cannot be updated");
+            return false;
+        }
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)

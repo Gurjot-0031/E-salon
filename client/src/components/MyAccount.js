@@ -47,20 +47,35 @@ class MyAccount extends Component {
                             .map(i =>
                                 <tr key={i}>
                                     <td className='col s2 '>{[i]}</td>
-                                    <td className='col s3' >{this.state[i]}</td>
-                                    {this.state['edit'+[i]] ? <td className='col s3'>
-                                    <textarea rows="1" cols="10"
-                                              style={{'resize':'none'}}
-                                              placeholder={'edit'+[i]+" "+this.state['edit'+[i]]}/>
+                                    {!this.state['edit'+[i]]
+                                        ?<td className='col s3' >{this.state[i]}</td>
+                                        :<td className='col s3'>
+                                            <input rows="1" cols="10" name={[i]}
+                                                   onChange={(e)=>this.handleChange(e)}
+                                                   value={this.state[[i]]}
+                                                   style={{'resize':'none'}}
+                                                // placeholder={'enter new value'}
+                                            />
                                         </td>
-                                        :null}
+                                    }
 
-                                    {[i] == 'uid' || [i] == 'username' ? null : <td className='col s1'>
-                                        <button className='material-icons'
-                                                         onClick={()=>this.edit(i)}>
-                                            edit
-                                        </button>
-                                    </td>}
+                                    {[i] == 'uid' || [i] == 'username' ?
+                                        null
+                                        :
+                                        (this.state['edit'+[i]])
+                                            ?<td className='col s1'>
+                                                <button className='material-icons'
+                                                        onClick={()=>this.handleDone(i)}>
+                                                    done
+                                                </button>
+                                            </td>
+                                            :<td className='col s1'>
+                                                <button className='material-icons'
+                                                        onClick={()=>this.handleEdit(i)}>
+                                                    edit
+                                                </button>
+                                            </td>
+                                    }
                                 </tr>
                             )
                     }
@@ -71,22 +86,49 @@ class MyAccount extends Component {
         );
     }
 
-    edit(element) {
+    handleEdit(element) {
         const x = "edit" + [element];
-        console.log("henlo2: "+x)
         this.setState(prevState=>({
-            editname: !prevState.editname,
+            [x]: !prevState[x],
         }))
-        console.log("HENLO "+this.state.editname);
+        //console.log("HENLO "+this.state.editname);
         //document.getElementById('text-'+[element]).hidden = false;
         //alert([element]+"  "+this.state[element])
     }
 
 
+    handleDone(element) {
+        fetch("http://localhost:8080/rest/users/updateUser",{
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                'uid':this.state.uid,
+                'username':this.state.username,
+                'name':this.state.name,
+                'email':this.state.email,
+                'phone':this.state.phone
+            })
+        })
+            .then(response => response.json())
+            .then(result =>{
+                if(result === false)
+                    alert("User can't be updated")
 
-
-
-
+            })
+        const x = "edit" + [element];
+        this.setState(prevState=>({
+            [x]: !prevState[x],
+        }))
+    }
+    handleChange(event) {
+        const {name,value} = event.target;
+        this.setState({
+            [name]:value
+        })
+    }
 }
 
 export default MyAccount;
