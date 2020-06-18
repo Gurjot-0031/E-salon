@@ -38,7 +38,7 @@ class MyAccount extends Component {
         return (
             <div>
                 <AppHeader/>
-                <h4><div align='center'>My Account</div></h4>
+                <h4><div align='center'>My Details</div></h4>
                 <table className='MyAccountTable '>
                     <tbody>
                     {
@@ -79,6 +79,14 @@ class MyAccount extends Component {
                                 </tr>
                             )
                     }
+                    </tbody>
+                </table>
+                <table>
+                    <thead>
+                    <th>My Bookings:</th>
+                    </thead>
+                    <tbody>
+
                     </tbody>
                 </table>
 
