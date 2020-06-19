@@ -9,12 +9,13 @@ class MyAccount extends Component {
             editname :false,
             editemail :false,
             editphone :false,
+            myBookings :[]
         };
         //this.edit = this.edit.bind(this);
 
     }
-    componentDidMount(){
-        fetch("http://localhost:8080/rest/users/getUserDetails", {
+     componentDidMount(){
+         fetch("http://localhost:8080/rest/users/getUserDetails", {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: {
                 'Content-Type': 'application/json',
@@ -33,6 +34,24 @@ class MyAccount extends Component {
                     phone: result.phone
                 })
             })
+
+         fetch("http://localhost:8080/rest/users/getAllBookings", {
+             method: 'POST', // *GET, POST, PUT, DELETE, etc.
+             headers: {
+                 'Content-Type': 'application/json',
+                 'Accept': '*/*',
+             },
+             body: JSON.stringify({username : localStorage.getItem("loggedUsername")})
+         })
+             .then(response => response.json())
+             .then(result =>
+                 //console.log("setting UID: "+result.uid);
+                 this.setState({
+                     myBookings: result
+                 })
+             )
+
+
     }
     render(){
         return (
@@ -43,11 +62,11 @@ class MyAccount extends Component {
                     <tbody>
                     {
                         Object.keys(this.state)
-                            .filter(i => !i.startsWith('edit'))
+                            .filter(i => !i.startsWith('edit') && !i.startsWith('myBookings'))
                             .map(i =>
                                 <tr key={i}>
                                     <td className='col s2 '>{[i]}</td>
-                                    {!this.state['edit'+[i]]
+                                    {(!this.state['edit'+[i]])
                                         ?<td className='col s3' >{this.state[i]}</td>
                                         :<td className='col s3'>
                                             <input rows="1" cols="10" name={[i]}
@@ -81,12 +100,28 @@ class MyAccount extends Component {
                     }
                     </tbody>
                 </table>
-                <table>
+                <h4><div align='center'>My Bookings</div></h4>
+                <table className={'MyBookingsTable'}>
                     <thead>
-                    <th>My Bookings:</th>
+                        <th>Date</th>
+                        <th>Starts</th>
+                        <th>Ends</th>
+                        <th>Status</th>
                     </thead>
                     <tbody>
 
+                        {this.state.myBookings
+                            .map(bookingObject =>
+                                    <tr>
+                                        {React.createElement('td',null,new Date(bookingObject.startDateTime).toDateString())}
+                                        {React.createElement('td',null, new Date(bookingObject.startDateTime).toLocaleTimeString())}
+                                        {React.createElement('td',null,new Date(bookingObject.endDateTime).toLocaleTimeString())}
+                                        <td>{(new Date().getTime() < new Date(bookingObject.startDateTime).getTime())
+                                            ? "Upcoming"
+                                            : "Completed"
+                                        }</td>
+                                    </tr>
+                        )}
                     </tbody>
                 </table>
 

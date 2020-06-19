@@ -1,8 +1,10 @@
 package com.jot.Esalon.API;
 
+import com.jot.Esalon.Repository.BookingsRepository;
 import com.jot.Esalon.Repository.UsersRepository;
 import com.jot.Esalon.model.AuthenticationRequest;
 import com.jot.Esalon.model.AuthenticationResponse;
+import com.jot.Esalon.model.Booking;
 import com.jot.Esalon.model.Users;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONUtil;
@@ -22,6 +24,8 @@ public class UsersAPI {
 
     @Autowired
     UsersRepository repository;
+    @Autowired
+    BookingsRepository bookingsRepository;
 
     //@CrossOrigin(origins = "*")
     @GetMapping(value = "/all")
@@ -77,6 +81,25 @@ public class UsersAPI {
             return false;
         }
     }
+
+    @PostMapping(value = "/getAllBookings")
+    public List<Booking> getAllBookings(@RequestBody final Users user){
+        List<Booking> list;
+        System.out.println("TEst "+user.getUsername());
+        Users tempUser = repository.findByUsername(user.getUsername());
+        try{
+            list = bookingsRepository.findByUidInBooking(tempUser.getUid());
+            for(Booking booking: list)
+                System.out.println(booking.toString());
+            return list;
+        }
+        catch (Exception e){
+            System.out.println("Error: Bookings cannot be fetched or no bookings for the user");
+            return null;
+        }
+    }
+
+
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public AuthenticationResponse authenticate(@RequestBody AuthenticationRequest request, HttpServletResponse httpResponse) throws Exception{
