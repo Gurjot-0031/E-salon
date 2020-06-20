@@ -49,7 +49,7 @@ class AppHeader extends Component{
                         <div className="brand-logo" ><Link to="home">E-Salon</Link> </div>
                         <ul id="nav-mobile">
                             {
-                                (localStorage.getItem("loggedUsername")!=null) ?
+                                (this.state.isLoggedIn != 'false') ?
                                     <li className="left"><i>Good {timeOfDay} {localStorage.getItem("loggedUsername")}</i></li>
                                     : null
 

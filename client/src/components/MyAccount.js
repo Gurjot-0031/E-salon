@@ -15,7 +15,7 @@ class MyAccount extends Component {
 
     }
      componentDidMount(){
-        if(!localStorage.getItem('loggedUsername'))
+        if(localStorage.getItem('isLoggedIn') === 'false')
             return;
          fetch("http://localhost:8080/rest/users/getUserDetails", {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
