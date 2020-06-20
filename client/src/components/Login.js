@@ -76,7 +76,7 @@ export default class Login extends Component{
                 <div>
                     <AppHeader/>
                     {/*<AppFooter/>*/}
-                    <div style={st} className={"container"}>
+                    <table className={'MyAccountTable'} >
                         {/*{*/}
                         {/*    auth ? <Redirect to="home"></Redirect>:null*/}
                         {/*}*/}
@@ -89,7 +89,7 @@ export default class Login extends Component{
                                     </input>
                                 </label>
                                 <label className="input-field col s12">Enter password
-                                    <input type={"text"} name={"password"}
+                                    <input type={"password"} name={"password"}
                                            value={this.state.password}
                                            onChange={this.handlePasswordChange.bind(this)} required>
                                     </input>
@@ -112,7 +112,7 @@ export default class Login extends Component{
                                 </label>
                             </div>
                         </div>
-                    </div>
+                    </table>
                 </div>
             );
         else

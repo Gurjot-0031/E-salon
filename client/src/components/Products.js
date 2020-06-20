@@ -48,11 +48,6 @@ export default class Products extends Component{
 
     render()
         {
-        let st={
-            color:"#813937",
-            backgroundColor: "#b2c4bd",
-            height:"10%"
-        }
         if(this.state.redirectToBooking) {
             return <Redirect push to= {
                 {pathname: "/bookAppointment",
@@ -62,12 +57,12 @@ export default class Products extends Component{
             }/>;
         }
         return (
-            <div style={st}>
+            <div className={'generalTheme'}>
                 <AppHeader/>
                 {/*<div><p>E-Salon</p></div>*/}
                 <div >
                     <div className="nav-title" >
-                        <nav style={st}>
+                        <nav className={'generalTheme'}>
                             <div className="row">
                                 <div className="left-align col s12"><h5>Choose from wide variety of services we offer </h5></div>
 

@@ -46,8 +46,56 @@
   font-size: 24px;
 }
 
-body{
-  margin: 0;
+
+body, html {
+  margin: 0px;
+  padding: 0px;
+  background-color: #c4d8d0;
+  font-family: 'Trebuchet MS';
+}
+
+.generalTheme{
+
+  color:#813937;
+  background-color: #c4d8d0;
+}
+
+table,td{
+  margin-top: 5%;
+  text-align: center;
+  border: 1px dot-dash black;
+  background-color: #d1e6dd;
+}
+
+.titleHeader{
+  background-color: #a5b4ae;
+  font-size: 24px;
+}
+th{
+  background-color: #b8cbc4;
+  text-align: center;
+  border: 1px dot-dash black;
+  height: 15%;
+}
+
+.MyAccountTable{
+  width: 50%;
+  margin-top: 2%;
+  margin-left: 25%;
+  margin-right: 25%;
+  background-color: #d1e6dd;
+}
+
+.MyBookingsTable{
+  width: 70%;
+  margin: 3% 5% 15% 15%;
+  background-color: #d1e6dd;
+  text-align: center;
+}
+
+
+.productTile{
+  background-color: #d4e7e0;
 }
 
 .schedulePicker{
@@ -56,22 +104,8 @@ body{
 }
 
 .slotButton{
-  width:90%;
-  margin:5%;
-  padding: 0px 5px 5px 5px;
-}
-
-.MyAccountTable{
-  width: 50%;
-  margin-left: 25%;
-  margin-right: 25%;
-}
-
-.MyBookingsTable{
-  width: 80%;
-  margin-left: 10%;
-  margin-right: 10%;
-  background-color: #e2ddde;
-  text-align: center;
-  border: palevioletred 10px;
+  width:40%;
+  /*margin:5%;*/
+  /*padding: 0px 5px 5px 5px;*/
+  font-size: 100%;
 }

@@ -85,7 +85,7 @@ export default class SignUp extends Component{
                 {/*{*/}
                 {/*    auth ? <Redirect to="home"></Redirect>:null*/}
                 {/*}*/}
-                <div className="table" >
+                <table className="myAccountTable" >
                     <div className="row">
                         <div className="col s4 offset-s4">
                             {/*<h4>E-Salon</h4>*/}
@@ -122,7 +122,7 @@ export default class SignUp extends Component{
                                 </input>
                             </label>
                             <label>Set a password
-                                <input type={"text"}
+                                <input type={"password"}
                                        name={"password"}
                                        value={this.state.password}
                                        onChange={(event)=>
@@ -132,7 +132,7 @@ export default class SignUp extends Component{
                                 </input>
                             </label>
                             <label>Confirm password
-                                <input type={"text"}
+                                <input type={"password"}
                                        name={"cnfpassword"}
                                        value={this.state.cnfpassword}
                                        onChange={(event)=>
@@ -157,7 +157,7 @@ export default class SignUp extends Component{
 
                         </div>
                     </div>
-                </div>
+                </table>
             </div>
             </div>
         );

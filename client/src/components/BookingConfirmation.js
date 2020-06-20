@@ -8,6 +8,10 @@ function BookingConfirmation(props) {
         let path = '/home';
         history.push(path);
     }
+    const redirectToMyAccount = () =>{
+        let path = '/myAccount';
+        history.push(path);
+    }
     return (
         <div>
             <div><h3> Your appointment has been booked <br/></h3>
@@ -23,11 +27,21 @@ function BookingConfirmation(props) {
                         {"  "+props.bookedSlot.endDateTime.toLocaleTimeString()}
                 </h5>
                 <div align={'center'}>
-                    <div>you can cancel or update your booking in MyAccount</div>
-                    <button
-                        className='btn-large'
-                        onClick={redirectToHome}
-                    >Go to home</button>
+                    <div>you can cancel your booking in MyAccount</div>
+                    <tr>
+                        <td className={'generalTheme col s6'}>
+                            <button
+                                className='btn-large'
+                                onClick={redirectToHome}
+                            >Go to home</button>
+                        </td>
+                        <td className={'generalTheme col s6'}>
+                            <button
+                                className='btn-large'
+                                onClick={redirectToMyAccount}
+                            >Go to MyAccount</button>
+                        </td>
+                    </tr>
                 </div>
             </div>
 

@@ -15,6 +15,8 @@ class MyAccount extends Component {
 
     }
      componentDidMount(){
+        if(!localStorage.getItem('loggedUsername'))
+            return;
          fetch("http://localhost:8080/rest/users/getUserDetails", {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: {
@@ -55,10 +57,12 @@ class MyAccount extends Component {
     }
     render(){
         return (
-            <div>
+            <div className={'generalTheme'}>
                 <AppHeader/>
-                <h4><div align='center'>My Details</div></h4>
                 <table className='MyAccountTable '>
+                    <thead>
+                        <th colSpan={'4'} className={'titleHeader'}>My Details</th>
+                    </thead>
                     <tbody>
                     {
                         Object.keys(this.state)
@@ -79,7 +83,7 @@ class MyAccount extends Component {
                                     }
 
                                     {[i] == 'uid' || [i] == 'username' ?
-                                        null
+                                        <td></td>
                                         :
                                         (this.state['edit'+[i]])
                                             ?<td className='col s1'>
@@ -100,19 +104,22 @@ class MyAccount extends Component {
                     }
                     </tbody>
                 </table>
-                <h4><div align='center'>My Bookings</div></h4>
-                <table className={'MyBookingsTable'}>
+                <table className={'MyBookingsTable '}>
+                    <thead>
+                        <th colSpan={'5'} className={'titleHeader'}>My Bookings</th>
+                    </thead>
                     <thead>
                         <th>Date</th>
                         <th>Starts</th>
                         <th>Ends</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </thead>
                     <tbody>
 
                         {this.state.myBookings
                             .map(bookingObject =>
-                                    <tr>
+                                    <tr className={'center'}>
                                         {React.createElement('td',null,new Date(bookingObject.startDateTime).toDateString())}
                                         {React.createElement('td',null, new Date(bookingObject.startDateTime).toLocaleTimeString())}
                                         {React.createElement('td',null,new Date(bookingObject.endDateTime).toLocaleTimeString())}
@@ -120,6 +127,10 @@ class MyAccount extends Component {
                                             ? "Upcoming"
                                             : "Completed"
                                         }</td>
+                                        <td>
+                                            <button className={'btn'}
+                                                onClick={() => this.cancelBooking(bookingObject)}>Delete/Cancel</button>
+                                        </td>
                                     </tr>
                         )}
                     </tbody>
@@ -171,6 +182,27 @@ class MyAccount extends Component {
         this.setState({
             [name]:value
         })
+    }
+
+    cancelBooking(bookingObject) {
+        fetch('http://localhost:8080/rest/bookings/deleteBooking',{
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(bookingObject)
+        })
+            .then(response => response.json())
+            .then(result => {
+                if(result == true){
+                    this.setState(prevState => ({
+                        ...prevState,
+                        myBookings: prevState.myBookings.filter(booking => booking.bookingId != bookingObject.bookingId)
+                    }))
+                }
+                else alert("cannot delete booking..")
+            })
     }
 }
 

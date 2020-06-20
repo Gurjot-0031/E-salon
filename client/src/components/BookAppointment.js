@@ -33,32 +33,33 @@ export  default class BookAppointment extends Component {
 
     render() {
         return (
-            <div>
+            <div className={'generalTheme'}>
                 <AppHeader/>
-               <div className="container">
-
-                   {(this.state.items.length !== 0 && !this.state.redirectToSchedulePicker)
-                       ?<div>
-                           <h5 className="left-align">Your selected services..</h5>
-                           <div className={"row"}>
-                            <div className={"col s3"}>Service</div>
-                            <div className={"col s3"}>Price</div>
-                            <div className={"col s3"}>Estimated time</div>
-                            <div className={"col s3"}>Remove</div>
-                           </div>
-
-                           {this.state.items.map(item=>(
-                           <div className={"row"} key={item.id}>
-                               <div className={"col s3"}>
+                    {(this.state.items.length !== 0 && !this.state.redirectToSchedulePicker)
+                       ?
+                       <table className='MyBookingsTable'>
+                            <thead>
+                            <th colSpan={'4'} className='titleHeader' >Your selected services..</th>
+                            </thead>
+                            <thead>
+                               <th className={"col s3"}>Service</th>
+                               <th className={"col s3"}>Price</th>
+                               <th className={"col s3"}>Estimated time</th>
+                               <th className={"col s3"}>Remove</th>
+                            </thead>
+                       <tbody>
+                        {this.state.items.map(item=>(
+                           <tr key={item.id}>
+                               <td className={"col s3"}>
                                    {item.name}
-                               </div>
-                               <div className={"col s3"}>
+                               </td>
+                               <td className={"col s3"}>
                                    {item.price}
-                               </div>
-                               <div className={"col s3"}>
+                               </td>
+                               <td className={"col s3"}>
                                    {item.estimatedTime}
-                               </div>
-                               <div className={"col s3"}>
+                               </td>
+                               <td className={"col s3"}>
                                    {/*<i*/}
                                    {/*    onClick={this.removeItem(item.id)}*/}
                                    {/*   className="material-icons">delete</i>*/}
@@ -70,49 +71,36 @@ export  default class BookAppointment extends Component {
                                        REMOVE
                                    </button>
 
-                               </div>
-                           </div>
+                               </td>
+                           </tr>
                            ))}
-                           <div>
-                               <div className={"row"}>
-                                   <div className={"col s6"}>Total price</div>
-                                   <div className={"col s2"}>${this.state.totalCost}</div>
-                               </div>
-                               <div className={"row"}>
-                                   <div className={"col s6"}>Total time</div>
-                                   <div className={"col s2"}>{this.state.totalTime} minutes</div>
-                               </div>
-                               <div className={"row schedulePicker"}>
-                                   <button
-                                       className={'btn'}
-                                       onClick={() => this.goToSchedulePicker()}>
-                                       NEXT
-                                   </button>
-                                   {/*<div className={"col s12"}>*/}
-                                   {/*    /!*{this.state.alreadyBooked.map(i=><p>{i.startDateTime}</p>)}*!/*/}
-                                   {/*    <SchedulePicker*/}
-                                   {/*        passedState = {this.state}*/}
-                                   {/*    />*/}
-                                   {/*</div>*/}
-                               </div>
-
-                           </div>
-                       </div>
+                           <tr>
+                               <td colSpan={4}>Total price - ${this.state.totalCost}</td>
+                           </tr>
+                            <tr>
+                                <td colSpan={4}>Total time - {this.state.totalTime} minutes</td>
+                            </tr>
+                            <tr>
+                                <td colSpan={4} >
+                                    <button
+                                        className={'btn-large'}
+                                        onClick={() => this.goToSchedulePicker()}>
+                                        NEXT
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                       </table>
                        :(this.state.items.length === 0)? <div>Your booking cart is empty</div> : null
                    }
 
-                </div>
+
                 {
                     (this.state.items.length!=0 && this.state.redirectToSchedulePicker)
                     ?
-                       <div className={'row schedulePicker'}>
-                           <div className={"col s12"}>
-                               {/*{this.state.alreadyBooked.map(i=><p>{i.startDateTime}</p>)}*/}
-                               <SchedulePicker
-                                   passedState = {this.state}
-                               />
-                           </div>
-                       </div>
+                        <SchedulePicker
+                            passedState = {this.state}
+                        />
 
                         :null
 

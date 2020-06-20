@@ -1,14 +1,8 @@
 import React from 'react';
 
 function SingleProduct(props) {
-    const styles={
-        color: "#341716",
-        backgroundColor: "#d8b4af",
-        // height: "10%"
-        //fontSize: "24px"
-    }
     return(
-        <div className="table-of-contents  "  style={styles}>
+        <div className={'productTile'}>
             {/*className="z-depth-5"*/}
 
             <div className="row z-depth-3" >
@@ -27,7 +21,7 @@ function SingleProduct(props) {
                     </div>
 
                     <div className="col s2 "><br/>
-                        <button className={"btn-flat waves-teal"}
+                        <button className={"btn-small waves-teal"}
                                 id={"toggle"+props.item.id}
                                 onClick={()=>props.handleToggle(props.item.id)}
                         style={{backgroundColor:"green",width: "90%",height:"10%"}}>ADD</button>

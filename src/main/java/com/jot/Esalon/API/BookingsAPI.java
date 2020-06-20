@@ -19,7 +19,7 @@ public class BookingsAPI {
 
     //@CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(value = "/all")
-    private List<Booking> getAll(HttpServletRequest request, HttpServletResponse response){
+    private List<Booking> getAllBookings(HttpServletRequest request, HttpServletResponse response){
         System.out.println(request.toString());
         System.out.println(response.toString());
         return repository.findAll();
@@ -27,7 +27,7 @@ public class BookingsAPI {
 
     //@CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "/addBooking")
-    public boolean addProductToDB(@RequestBody final Booking booking){
+    public boolean addBookingToDB(@RequestBody final Booking booking){
         System.out.println(booking.getStartDateTime());
         System.out.println(booking.getEndDateTime());
         System.out.println(booking.getUidInBooking());
@@ -43,10 +43,22 @@ public class BookingsAPI {
 
     //@CrossOrigin(origins = "http://localhost:3000")
     @PutMapping(value = "/updateBooking")
-    public Booking updateProduct(@RequestBody final Booking booking){
+    public Booking updateBooking(@RequestBody final Booking booking){
 
         //repository.deleteById(product.getId());
         repository.save(booking);
         return booking;
+    }
+
+    @PostMapping(value = "/deleteBooking")
+    public boolean deleteBooking(@RequestBody final Booking booking){
+        try{
+            repository.delete(booking);
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }

@@ -70,8 +70,8 @@ export default class SchedulePicker extends Component{
         let thisMonth = today.getMonth();
         let thisYear = today.getFullYear();
 
-        //showing 11 days in future
-        for (let i = 0; i < 10; i++) {
+        //showing 6 days in future
+        for (let i = 1; i < 7; i++) {
             temp = [...temp ,new Date(thisYear,thisMonth,dateToday+i)];
         }
 
@@ -145,45 +145,54 @@ export default class SchedulePicker extends Component{
                 {
                     (!this.state.isBooked)
                         ?
-                        <div>
-                            <h3 className="header">Pick a slot</h3>
-                            <div className={'col s1'}>
-                                {temp.map(item =>
-                                    <button className="btn row"
-                                            style={{'padding':'15%','margin':'15%', 'width':'150%', 'height':'70%'}}
-                                            onClick={e => (this.showAvailabilities(item,e))}>
-                                        {item.getDate() +"-"+ monthNames[item.getMonth()]}
-                                    </button>
-                                )}
-                            </div>
-                        </div>
+                        <table>
+                            <thead>
+                                <th className={'titleHeader'} colSpan={6}>Pick a slot</th>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    {temp.map(item =>
+                                        <td className='col s2 generalTheme'>
+                                            <button className="btn-small"
+                                                // style={{'padding':'15%','margin':'15%', 'width':'150%', 'height':'70%'}}
+                                                    onClick={e => (this.showAvailabilities(item,e))}>
+                                                {item.getDate() +"-"+ monthNames[item.getMonth()]}
+                                            </button>
+                                        </td>
+                                    )}
+                                </tr>
+                            </tbody>
+                        </table>
                         :
                         null
                 }
                 {(this.state.selectedDate && !this.state.isBooked)
                     ? <div>
-                        <div className='col s8 offset-s2'>
-                            <div className={'row'} style={{'padding':'5% 5% 5% 5%'}}>
-                                <h5>
+                        <table >
+                            <thead >
+                                <th>
                                     Available Slots for{" "+this.state.selectedDate +"-"+ monthNames[this.state.selectedMonth]}
-                                </h5>
-                            </div>
-                            {availableTimeSlots.map(slot=>
-                                    <div className={'col s3'}>
-                                        <div className={'row '}>
-                                            <button className='slotButton btn-small '
-                                                onClick={e=>this.bookSchedule(slot,e)}
+                                </th>
+                            </thead>
+                            <tbody>
+                                {availableTimeSlots.map(slot=>
+                                        <tr>
+                                            <td>
+                                                <button className='slotButton btn-small '
+                                                        onClick={e=>this.bookSchedule(slot,e)}
                                                 >
-                                                {slot.startDateTime.getHours() }:{ slot.startDateTime.getMinutes()+' '}
-                                                -{' '}
-                                                { slot.endDateTime.getHours()}
-                                                : {slot.endDateTime.getMinutes()}
-                                            </button>
-                                        </div>
-
-                                    </div>)
-                            }
-                        </div>
+                                                    {slot.startDateTime.getHours() }:{ slot.startDateTime.getMinutes()+' '}
+                                                    -{' '}
+                                                    { slot.endDateTime.getHours()}
+                                                    : {slot.endDateTime.getMinutes()}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                )
+                                }
+                            </tbody>
+                        </table>
                     </div>
                     : (this.state.isBooked) ? <BookingConfirmation bookedSlot={this.state.bookedSlot}/>
                                             : null }
