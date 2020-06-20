@@ -49,7 +49,7 @@ class App extends Component{
                         </Route>
 
                         <Route path="/myAccount" strict exact>
-                            <MyAccount/>
+                            <Protected cmp={MyAccount}/>
                         </Route>
 
 
