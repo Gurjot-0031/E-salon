@@ -1,18 +1,15 @@
 Please check the demos below:-
 
-<div align="center">
-    ![](Demo_1.gif)
-</div>
+![](Demo_1.gif)
+
 <br/>
-<p align="center">Demo 1:- Login, booking services and cancelling the bookings</p>
+<p align="left">Demo 1:- Login, booking services and cancelling the bookings</p>
 <br/>
 <br/><br/>
 
-<div align="center">
-    ![](Demo_2.gif)
-</div>
+ ![](Demo_2.gif)
 <br/>
-<p align="center">Demo 2:- MyAccount, updating account details.</p>
+<p align="left">Demo 2:- MyAccount, updating account details.</p>
 <br/>
 
 <h4>Next steps</h4>
