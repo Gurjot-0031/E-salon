@@ -46,7 +46,7 @@ class AppHeader extends Component{
                 <nav>
                     <div className="nav-wrapper">
                         {/*<a href="#" className="left brand-logo" >E-Salon</a>*/}
-                        <div className="brand-logo" ><Link to="home">E-Salon</Link> </div>
+                        <div className="brand-logo center" ><Link to="home">E-Salon</Link> </div>
                         <ul id="nav-mobile">
                             {
                                 (this.state.isLoggedIn != 'false') ?
