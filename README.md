@@ -1,9 +1,22 @@
-Please check the demo animations below:-
+Please check the demos below:-
 
-![](Demo1.gif)
+![](Demo_1.gif)
+<br/>
+<p align="center">Demo 1:- Login, booking services and cancelling the bookings</p>
+<br/>
+<br/><br/>
 
+![](Demo_2.gif)
+<br/>
+<p align="center">Demo 2:- MyAccount, updating account details.</p>
+<br/>
 
-![](Demo2.gif)
+<h4>Next steps</h4>
+<ul>
+<li>Sending email and text notification about booking confirmation.</li>
+<li>Enabling users to set security questions for password reset/recovery.</li>
+<li>Adding 'forgot password?' feature to reset password via reset link sent to email.</li>
+</ul>
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
